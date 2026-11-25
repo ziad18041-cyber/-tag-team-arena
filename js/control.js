@@ -216,7 +216,8 @@
     TTSync.init({ role: 'control', onState: onState, onStatus: status, getBank: function () { return bank; },
       onBank: function (list) { if (Array.isArray(list) && list.length && JSON.stringify(list) !== JSON.stringify(bank)) { setBank(list, false); try { localStorage.setItem('tt_bank_v2', JSON.stringify(list)); } catch (e) {} render(); } } });
     setInterval(tick, 100);
-    window.TTControl = { state: function () { return S; }, hist: function () { return hist.length; }, bank: function () { return bank; } };
+    window.TTControl = { state: function () { return S; }, hist: function () { return hist.length; }, bank: function () { return bank; }, act: act, toast: toast };
+    if (window.TTControlMovesStart) window.TTControlMovesStart();
   }
   window.TTControlStart = start;
 })();

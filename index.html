@@ -102,6 +102,62 @@
       </div>
     </div>
   </div>
+  <!-- MAIN MENU -->
+  <div id="menuView" class="ov" hidden>
+    <div class="mn-beams"><i></i><i></i><i></i><i></i></div>
+    <div class="mn-logo"><span class="tt">TAG TEAM</span><span class="sub">اختر التحدي</span></div>
+    <div class="mn-cards">
+      <button class="mn-card c1" data-mode="quiz" type="button">
+        <span class="mn-k">التحدي الأول</span>
+        <b class="mn-t">الاستنزاف</b>
+        <span class="mn-r"><i>ROUND 01</i> تحدي الأسئلة</span>
+        <span class="mn-r soon"><i>ROUND 02</i> تحدي الصور <em>قريبًا</em></span>
+        <span class="mn-faces" id="mnFaces"></span>
+      </button>
+      <button class="mn-card c2" data-mode="moves" type="button">
+        <span class="mn-k">التحدي الثاني</span>
+        <b class="mn-t">تحدي التقليد</b>
+        <span class="mn-en">MOVE IMITATION</span>
+        <span class="mn-r">30 حركة استعراضية • فردي • بدون تلامس</span>
+        <span class="mn-thumbs" id="mnThumbs"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MOVE IMITATION -->
+  <div id="movesView" class="ov" hidden>
+    <header class="mv-top">
+      <button class="mv-btn ghost" data-mode="menu" type="button">⟵ القائمة الرئيسية</button>
+      <div class="mv-title"><b>تحدي التقليد</b><span>MOVE IMITATION</span></div>
+      <div class="mv-count" id="mvCount">01 / 30</div>
+    </header>
+    <div class="mv-main">
+      <div class="mv-side" id="mvCoverSide">
+        <div class="mv-cov-k">طريقة اللعب</div>
+        <p>يظهر مقطع لمصارع يؤدي حركته الاستعراضية. المشارك يقلّدها لوحده، بدون أي تلامس أو ضرب أو إسقاط.</p>
+        <p class="mv-ex">المقطع الظاهر الآن مثال للتوضيح.</p>
+        <button class="mv-start" data-mv="start" type="button">▶ ابدأ التحدي</button>
+      </div>
+      <div class="mv-stage">
+        <div class="mv-player" id="mvPlayerWrap">
+          <div id="ytPlayer"></div>
+          <div class="mv-msg" id="mvMsg" hidden></div>
+          <div class="mv-badge" id="mvBadge">مقطع المثال</div>
+        </div>
+        <div class="mv-info"><b id="mvWrestler"></b><span id="mvMove"></span></div>
+        <div class="mv-ctrl" id="mvCtrl">
+          <button class="mv-btn" data-mv="prev" type="button">⏮ السابق</button>
+          <button class="mv-btn" data-mv="replay" type="button">⟲ إعادة</button>
+          <button class="mv-btn mv-play" data-mv="toggle" id="mvToggle" type="button">⏯ تشغيل / إيقاف</button>
+          <button class="mv-btn" data-mv="next" type="button">التالي ⏭</button>
+          <button class="mv-btn" data-mv="skip" type="button">تخطي ⤼</button>
+          <button class="mv-btn" data-mv="shuffle" type="button">🔀 عشوائي</button>
+          <button class="mv-btn" id="mvFull" type="button">⛶ ملء الشاشة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="startOverlay"><button id="startShow">▶ ابدأ العرض<small>تفعيل الصوت وملء الشاشة</small></button><button class="so-switch" data-switch>⇄ تغيير دور الجهاز (لوحة التحكم)</button><div class="so-status" id="soStatus"></div></div>
   <button class="scr-switch" data-switch>⇄ تغيير الدور</button>
   <div id="scrStatus" class="scr-status"></div>
@@ -115,6 +171,34 @@
     <div class="cp-conn" id="conn"><i></i><span>…</span></div>
   </header>
 
+  <div class="seg cp-tabs" id="modeTabs"><button data-mode="menu">القائمة</button><button data-mode="quiz">التحدي الأول</button><button data-mode="moves">تحدي التقليد</button></div>
+
+  <section id="cpMoves" class="cp-moves" hidden>
+    <div class="cpm-head"><span id="cpmCount">01 / 30</span><b id="cpmName"></b><small id="cpmMove"></small></div>
+    <button class="cp-btn start" id="cpmStart">▶ ابدأ التحدي</button>
+    <div class="cpm-main">
+      <button class="cp-btn" data-mv="prev">⏮ السابق</button>
+      <button class="cp-btn cpm-play" data-mv="toggle" id="cpmToggle">⏯</button>
+      <button class="cp-btn" data-mv="next">التالي ⏭</button>
+    </div>
+    <div class="cpm-row">
+      <button class="cp-btn" data-mv="replay">⟲ إعادة</button>
+      <button class="cp-btn" data-mv="skip">تخطي ⤼</button>
+      <button class="cp-btn" data-mv="shuffle">🔀 عشوائي</button>
+      <button class="cp-btn" data-mv="unshuffle">الترتيب الأصلي</button>
+    </div>
+    <button class="cp-btn" data-mv="cover">عرض الغلاف ومقطع المثال</button>
+    <details class="cpm-time"><summary>ضبط بداية ونهاية المقطع (اختياري)</summary>
+      <p>شغّل المقطع، ولما توصل للحركة اضغط «البداية هنا»، ولما تخلص اضغط «النهاية هنا». يتحفظ تلقائيًا.</p>
+      <div class="adj"><button data-mark="start">📍 البداية هنا</button><button data-mark="end">🏁 النهاية هنا</button><button id="cpmClear">مسح التوقيت</button></div>
+      <small id="cpmTimes"></small>
+    </details>
+    <div class="cpm-list" id="cpmList"></div>
+  </section>
+
+  <section id="cpMenu" class="cp-menu" hidden><p>الشاشة الآن على القائمة الرئيسية. اختر التحدي من الأزرار فوق.</p></section>
+
+  <div id="cpQuiz">
   <div class="cp-clocks">
     <div class="cp-clock b" id="cc0"><small>الأزرق</small><b id="ct0">02:00</b><em id="cn0"></em></div>
     <div class="cp-phase" id="cphase">جاهز</div>
@@ -158,6 +242,7 @@
     <div class="cp-team y"><div class="cp-th"><span>تبديل الأصفر — اختر الداخل</span><button class="cp-force" id="force1">⚠ تبديل إجباري</button></div><div class="cp-faces" id="tag1"></div></div>
   </div>
 
+  </div>
   <details class="cp-set" id="settings">
     <summary>⚙️ الإعدادات</summary>
     <div class="cp-row"><span>تصحيح الوقت</span><div class="adj"><button data-a="0,-5000">أزرق −5</button><button data-a="0,5000">أزرق +5</button><button data-a="1,-5000">أصفر −5</button><button data-a="1,5000">أصفر +5</button></div></div>
@@ -175,8 +260,11 @@
 <script src="js/logic.js"></script>
 <script src="js/sync.js"></script>
 <script src="js/sfx.js"></script>
+<script src="js/moves-data.js"></script>
 <script src="js/screen.js"></script>
+<script src="js/moves.js"></script>
 <script src="js/control.js"></script>
+<script src="js/control-moves.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

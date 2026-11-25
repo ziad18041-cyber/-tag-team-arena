@@ -38,6 +38,7 @@
       mute: !!opts.mute,
       round: opts.round || 1,
       auto: opts.auto !== false,
+      mode: opts.mode || 'menu', mvN: 30,
       ev: { n: (opts.evn || 0) + 1, t: 'reset', s: null, a: null, b: null }
     };
     if (opts.used) S.used = opts.used.slice();
@@ -173,7 +174,8 @@
     return bump(S, clk, { t: 'tag', s: side, a: id, b: out, f: forced ? 1 : 0 });
   };
   A.reset = function (S, clk, bank) {
-    var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: [], v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute, round: S.round, auto: S.auto });
+    var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: [], v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute, round: S.round, auto: S.auto, mode: S.mode || 'quiz' });
+    if (S.mv) N.mv = clone(S.mv);
     N.active = S.active.slice();
     // continue with the questions that haven't been asked yet
     if (bank && bank.length) {
@@ -225,6 +227,47 @@
     return bump(S, clk, { t: 'roster', s: null, a: null, b: null });
   };
   A.setAuto = function (S, clk, on) { if ((S.auto !== false) === !!on) return null; S = clone(S); S.auto = !!on; return bump(S, clk, null); };
+  // ---- top-level mode: menu | quiz | moves ----
+  A.setMode = function (S, clk, mode) {
+    if (['menu', 'quiz', 'moves'].indexOf(mode) < 0 || (S.mode || 'menu') === mode) return null;
+    S = clone(S);
+    if (S.phase === 'live' && mode !== 'quiz') { settle(S); S.phase = 'paused'; }
+    S.mode = mode;
+    if (mode === 'moves') { S.mv = mvInit(S.mv, S.mvN || 30); if (S.mv) S.mv.play = false; }
+    return bump(S, clk, { t: 'mode', s: null, a: mode, b: null });
+  };
+  function mvInit(mv, n) {
+    if (mv && Array.isArray(mv.order) && mv.order.length === n) return mv;
+    var o = []; for (var i = 0; i < n; i++) o.push(i);
+    return { i: 0, order: o, play: false, started: false, rs: 0, t: {}, mk: 0 };
+  }
+  // ---- imitation challenge ----
+  A.moves = function (S, clk, op, arg) {
+    S = clone(S);
+    var n = S.mvN || 30;
+    S.mv = mvInit(S.mv, n);
+    var mv = S.mv;
+    switch (op) {
+      case 'start': mv.started = true; mv.i = 0; mv.play = true; mv.rs++; break;
+      case 'cover': mv.started = false; mv.play = true; mv.rs++; break;
+      case 'next': case 'skip': if (mv.i >= n - 1) return null; mv.i++; mv.play = true; break;
+      case 'prev': if (mv.i <= 0) return null; mv.i--; mv.play = true; break;
+      case 'go': if (arg < 0 || arg >= n) return null; mv.i = arg; mv.play = true; break;
+      case 'play': mv.play = true; break;
+      case 'pause': mv.play = false; break;
+      case 'toggle': mv.play = !mv.play; break;
+      case 'replay': mv.rs++; mv.play = true; break;
+      case 'shuffle':
+        for (var i = mv.order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = mv.order[i]; mv.order[i] = mv.order[j]; mv.order[j] = x; }
+        mv.i = 0; mv.play = true; mv.rs++; break;
+      case 'unshuffle': mv.order = mv.order.slice().sort(function (a, b) { return a - b; }); mv.i = 0; mv.rs++; break;
+      case 'mark': mv.mk = (mv.mk || 0) + 1; mv.mkw = arg; break;            // ask the screen to stamp start/end at its current time
+      case 'times': mv.t[arg.id] = [arg.s, arg.e]; break;                   // screen writes the stamped times
+      case 'cleartimes': delete mv.t[arg]; break;
+      default: return null;
+    }
+    return bump(S, clk, { t: 'mv', s: null, a: op, b: null });
+  };
   A.mute = function (S, clk, m) { S = clone(S); S.mute = !!m; return bump(S, clk, null); };
   A.bank = function (S, clk, bank) {
     if (!bank || !bank.length) return null;

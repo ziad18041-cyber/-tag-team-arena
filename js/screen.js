@@ -102,6 +102,7 @@
     layout();
     chip();
     if (window.SFX) SFX.setMuted(!!S.mute);
+    if (window.TTMoves) TTMoves.apply(S);
   }
 
   function chip() {
@@ -423,6 +424,7 @@
 
   function play(ev) {
     if (!ev || !ev.t) return;
+    if (S && S.mode && S.mode !== 'quiz') return;
     if (ev.t === 'timeout') { if (!overShown) { cancel(); sceneBusy = Date.now() + SC.timeout(ev.s, ev.b); } return; }
     if (ev.t === 'bankout') { if (!overShown) { cancel(); sceneBusy = Date.now() + SC.bankout(ev); } return; }
     if (ev.t === 'next') { SC.next(); return; } // overlay-free, doesn't interrupt others
@@ -516,6 +518,8 @@
     };
     $('roomGo').onclick = function () { var v = $('roomInput').value.trim(); if (v) { try { localStorage.setItem('tt_room', v.toLowerCase()); } catch (e) {} location.reload(); } };
     document.addEventListener('visibilitychange', function () { if (!document.hidden) { try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(function () {}); } catch (e) {} } });
+    window.TTScreenOnState = onState;
+    if (window.TTMoves) TTMoves.build();
     TTSync.init({ role: 'screen', onState: onState, onStatus: status });
     requestAnimationFrame(frame);
     window.TTScreen = { state: function () { return S; }, shot: function () { return lastShot; }, overShown: function () { return overShown; }, rem: rem };
