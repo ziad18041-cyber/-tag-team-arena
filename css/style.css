@@ -471,3 +471,12 @@ textarea{width:100%;font:inherit;font-size:14px;line-height:1.6;background:#050b
 .cp-exrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:14px}
 .cp-exrow button{padding:8px 12px;border-radius:10px;border:1px solid #ffc92888;background:#2a2105;color:#ffe9a8;font-size:15px}
 .cp-exrow button.on{background:#ffc928;color:#111;font-weight:900}
+
+/* question text must never sit under the counter: keep Arabic dots (ب ي ج …) fully visible */
+.qpanel{top:742px;height:186px}
+.qtext{line-height:1.4;padding-bottom:30px}
+.qtext.long{font-size:38px;line-height:1.35}
+.qcat:not(:empty)~.qtext{margin-top:38px}
+.qnum{bottom:3px;font-size:20px;line-height:1.3}
+.imground .qpanel{top:846px;height:74px}
+.imground .qtext{padding-bottom:0}
