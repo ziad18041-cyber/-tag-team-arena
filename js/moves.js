@@ -3,7 +3,7 @@
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
   var MOVES = window.TT_MOVES || [], EX = null, CLIPS = [];
-  var S = null, player = null, ytReady = false, ytLoading = false, loadedKey = '', lastMk = null, errT = 0, ytTimeout = 0, mode = '';
+  var apT = 0, mutedStart = false, S = null, player = null, ytReady = false, ytLoading = false, loadedKey = '', lastMk = null, errT = 0, ytTimeout = 0, mode = '';
 
   function split() { EX = MOVES.filter(function (m) { return m.isExample; })[0] || null; CLIPS = MOVES.filter(function (m) { return !m.isExample; }); }
   split();
@@ -46,7 +46,7 @@
       ytReady = true; clearTimeout(ytTimeout);
       player = new YT.Player('ytPlayer', {
         width: '100%', height: '100%',
-        playerVars: { autoplay: 0, controls: 1, rel: 0, modestbranding: 1, playsinline: 1, fs: 0, iv_load_policy: 3 },
+        playerVars: { autoplay: 1, controls: 0, disablekb: 1, rel: 0, modestbranding: 1, playsinline: 1, fs: 0, iv_load_policy: 3 },
         events: { onReady: function () { loadedKey = ''; if (S) apply(S); }, onStateChange: onYTState, onError: onYTError }
       });
     };
@@ -59,7 +59,7 @@
   }
   function msg(t) { var m = $('mvMsg'); m.textContent = t || ''; m.hidden = !t; }
   function onYTState(e) {
-    if (e.data === 1) msg('');
+    if (e.data === 1) { msg(''); clearTimeout(apT); if (mutedStart) { mutedStart = false; setTimeout(function () { try { player.unMute(); player.setVolume(100); } catch (x) {} }, 400); } }
     if (e.data === 0 && S && S.mode === 'moves' && S.mv && S.mv.play) {
       // loop the segment so the participant can keep imitating it
       var c = clip(); if (!c) return; var t = times(c);
@@ -71,6 +71,16 @@
     msg('تعذّر تشغيل هذا المقطع' + (c ? ' (' + c.wrestler + ')' : '') + ' — التخطي تلقائيًا…');
     clearTimeout(errT);
     if (S && S.mv && S.mv.started) errT = setTimeout(function () { msg(''); act('skip'); }, 2500);
+  }
+  // browsers may block autoplay with sound until someone clicks the laptop: then start muted and unmute once it runs
+  function ensurePlaying() {
+    clearTimeout(apT);
+    apT = setTimeout(function () {
+      try {
+        var st = player.getPlayerState();
+        if (S && S.mv && S.mv.play && st !== 1 && st !== 3) { mutedStart = true; player.mute(); player.playVideo(); }
+      } catch (e) {}
+    }, 1500);
   }
   function stopVideo() { try { if (player && player.stopVideo) player.stopVideo(); } catch (e) {} loadedKey = ''; }
 
@@ -99,15 +109,15 @@
     $('mvMove').textContent = c ? c.moveName + (c.moveNameAr ? ' — ' + c.moveNameAr : '') : '';
     $('mvToggle').textContent = mv.play ? '⏸ إيقاف مؤقت' : '▶ تشغيل';
     $('mvPlayerWrap').style.setProperty('--mvb', mv.br || 1.3);
-    $('mvFsName').textContent = (mv.started ? String(mv.i + 1).padStart(2, '0') + ' / ' + CLIPS.length + '  •  ' : 'مثال  •  ') + (c ? c.wrestler + ' — ' + c.moveName : '');
+    $('movesView').classList.toggle('mvfs', !!mv.fs);
     if (!player || !player.loadVideoById || !c) return;
     var t = times(c), key = c.videoId + ':' + (mv.started ? mv.i : 'ex') + ':' + mv.rs + ':' + t.s + ':' + t.e;
     if (key !== loadedKey) {
       loadedKey = key; msg(''); clearTimeout(errT);
       var o = { videoId: c.videoId, startSeconds: t.s }; if (t.e) o.endSeconds = t.e;
-      try { if (mv.play) player.loadVideoById(o); else player.cueVideoById(o); } catch (e) {}
+      try { if (mv.play) { player.loadVideoById(o); ensurePlaying(); } else player.cueVideoById(o); } catch (e) {}
     } else {
-      try { var st = player.getPlayerState(); if (mv.play && st !== 1 && st !== 3) player.playVideo(); if (!mv.play && st === 1) player.pauseVideo(); } catch (e) {}
+      try { var st = player.getPlayerState(); if (mv.play && st !== 1 && st !== 3) { player.playVideo(); ensurePlaying(); } if (!mv.play && st === 1) player.pauseVideo(); } catch (e) {}
     }
     // a "mark" request from the control panel: stamp the current time of this clip
     if (lastMk === null) lastMk = mv.mk || 0;
@@ -130,7 +140,6 @@
     document.querySelectorAll('#screen [data-mode]').forEach(function (b) { b.addEventListener('click', function () { setMode(b.dataset.mode); }); });
     document.querySelectorAll('#movesView [data-mv]').forEach(function (b) { b.addEventListener('click', function () { act(b.dataset.mv); }); });
     $('scrHome').addEventListener('click', function () { setMode('menu'); });
-    $('mvFsExit').addEventListener('click', function () { try { document.exitFullscreen(); } catch (e) {} });
     // keyboard on the laptop: → next, ← previous, space play/pause, R replay, F fullscreen
     document.addEventListener('keydown', function (e) {
       if (!S || S.mode !== 'moves' || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
@@ -138,12 +147,10 @@
       if (k === 'ArrowRight' || k === 'ArrowLeft') { e.preventDefault(); act(S.mv && S.mv.started ? (k === 'ArrowRight' ? 'next' : 'prev') : 'start'); }
       else if (k === ' ') { e.preventDefault(); act('toggle'); }
       else if (k === 'r' || k === 'R') act('replay');
-      else if (k === 'f' || k === 'F') $('mvFull').click();
+      else if (k === 'f' || k === 'F') act('fs');
+      else if (k === 'Escape' && S.mv && S.mv.fs) act('fs', false);
     });
-    $('mvFull').addEventListener('click', function () {
-      var el = $('mvPlayerWrap');
-      try { if (document.fullscreenElement) document.exitFullscreen(); else (el.requestFullscreen || el.webkitRequestFullscreen).call(el); } catch (e) {}
-    });
+    $('mvFull').addEventListener('click', function () { act('fs'); });
   }
   window.TTMoves = { apply: apply, build: build, clips: function () { return CLIPS; }, example: function () { return EX; }, key: function () { return loadedKey; } };
 })();

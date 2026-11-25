@@ -23,6 +23,8 @@
     $('cpmMove').textContent = c ? c.moveName + (c.moveNameAr ? ' — ' + c.moveNameAr : '') : '';
     $('cpmStart').hidden = !!mv.started;
     $('cpmBr').textContent = Math.round((mv.br || 1.3) * 100) + '%';
+    $('cpmFs').textContent = mv.fs ? '✕ إلغاء ملء الشاشة' : '⛶ ملء الشاشة على اللابتوب';
+    $('cpmFs').classList.toggle('on', !!mv.fs);
     $('cpmToggle').textContent = mv.play ? '⏸ إيقاف' : '▶ تشغيل';
     document.querySelectorAll('#cpMoves [data-mv="prev"]').forEach(function (b) { b.disabled = !mv.started || mv.i <= 0; });
     document.querySelectorAll('#cpMoves [data-mv="next"],#cpMoves [data-mv="skip"]').forEach(function (b) { b.disabled = !mv.started || mv.i >= CLIPS.length - 1; });

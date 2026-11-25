@@ -496,10 +496,9 @@
   }
 
   function status(st) {
-    var t = st.mode === 'claude' ? (st.connected ? 'متصل' : 'بانتظار الاتصال') : st.mode === 'mqtt' ? ((st.connected ? 'متصل' : 'جارٍ الاتصال') + (st.room ? ' • الغرفة ' + st.room : '')) : 'محلي';
+    var t = st.mode === 'claude' ? (st.connected ? 'متصل' : 'بانتظار الاتصال') : st.mode === 'mqtt' ? ((st.connected ? 'متصل' : 'جارٍ الاتصال') + ' • خوادم ' + (st.links || 0) + '/' + (st.linksTotal || 0) + (st.room ? ' • الغرفة ' + st.room : '')) : 'محلي';
     if (st.note) t += ' • ' + st.note;
     $('scrStatus').textContent = t; $('soStatus').textContent = t;
-    if (st.mode === 'mqtt' && !st.room) $('roomAsk').hidden = false;
   }
 
   function start() {
@@ -516,7 +515,7 @@
       try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(function () {}); } catch (e) {}
       $('startOverlay').hidden = true;
     };
-    $('roomGo').onclick = function () { var v = $('roomInput').value.trim(); if (v) { try { localStorage.setItem('tt_room', v.toLowerCase()); } catch (e) {} location.reload(); } };
+    $('roomGo').onclick = function () { var v = $('roomInput').value.trim(); if (v) { location.href = location.pathname + '?room=' + encodeURIComponent(v.toLowerCase()) + '#screen'; } };
     document.addEventListener('visibilitychange', function () { if (!document.hidden) { try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(function () {}); } catch (e) {} } });
     window.TTScreenOnState = onState;
     if (window.TTMoves) TTMoves.build();

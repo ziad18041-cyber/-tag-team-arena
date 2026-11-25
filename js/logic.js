@@ -233,7 +233,7 @@
     S = clone(S);
     if (S.phase === 'live' && mode !== 'quiz') { settle(S); S.phase = 'paused'; }
     S.mode = mode;
-    if (mode === 'moves') { S.mv = mvInit(S.mv, S.mvN || 30); if (S.mv) S.mv.play = false; }
+    if (mode === 'moves') { S.mv = mvInit(S.mv, S.mvN || 30); if (S.mv) { S.mv.play = true; S.mv.rs = (S.mv.rs || 0) + 1; } }
     return bump(S, clk, { t: 'mode', s: null, a: mode, b: null });
   };
   function mvInit(mv, n) {
@@ -265,6 +265,7 @@
       case 'mark': mv.mk = (mv.mk || 0) + 1; mv.mkw = arg; break;            // ask the screen to stamp start/end at its current time
       case 'times': mv.t[arg.id] = [arg.s, arg.e]; break;                   // screen writes the stamped times
       case 'cleartimes': delete mv.t[arg]; break;
+      case 'fs': mv.fs = arg === undefined ? !mv.fs : !!arg; break;      // full-screen player on the audience screen, toggled from the phone
       default: return null;
     }
     return bump(S, clk, { t: 'mv', s: null, a: op, b: null });

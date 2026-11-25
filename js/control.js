@@ -121,9 +121,9 @@
       cls = st.connected ? 'ok' : (st.dbOk ? 'warn' : 'bad');
       t = (st.connected ? 'متصل' : (st.dbOk ? 'متصل (بطيء)' : 'غير متصل')) + ' • شاشات: ' + (st.screens || 0);
     } else if (st.mode === 'mqtt') {
-      cls = st.connected ? 'ok' : 'bad'; t = (st.connected ? 'متصل' : 'جارٍ الاتصال…') + ' • شاشات: ' + (st.screens || 0);
+      cls = st.connected ? 'ok' : 'bad'; t = (st.connected ? 'متصل' : 'جارٍ الاتصال…') + ' • خوادم ' + (st.links || 0) + '/' + (st.linksTotal || 0) + ' • شاشات: ' + (st.screens || 0);
       $('roomRow').hidden = false; $('roomCode').textContent = st.room || '';
-      var base = location.href.split('#')[0].split('?')[0], link = base + '?room=' + st.room + '#screen';
+      var base = location.href.split('#')[0].split('?')[0], link = base + (st.room && st.room !== 'ziadtagteam' ? '?room=' + st.room : '') + '#screen';
       $('roomLinks').textContent = link;
       $('scrLink').hidden = false; $('scrLinkUrl').textContent = link; $('scrLink').classList.toggle('ok', (st.screens || 0) > 0);
       $('scrLinkState').textContent = (st.screens || 0) > 0 ? '✓ شاشة الجمهور متصلة' : 'افتح هذا الرابط على اللابتوب (شاشة الجمهور):';

@@ -30,8 +30,11 @@
 
   function newer(S) {
     if (!cur) return true;
-    if (S.v !== cur.v) return S.v > cur.v;
-    return (S.at || 0) > (cur.at || 0);
+    if (S.v > cur.v) return true;
+    if (S.v === cur.v) return (S.at || 0) > (cur.at || 0);
+    // lower version but clearly more recent action: the other device started from an older cache
+    // (e.g. the laptop once ran the control panel and kept a big version number) — take the newer action
+    return (S.at || 0) > (cur.at || 0) + 2000;
   }
   function receive(env, via) {
     if (!env || typeof env !== 'object') return;
@@ -55,8 +58,9 @@
     var o = new Uint8Array(h.length + len); o.set(h, 0); var i = h.length;
     parts.forEach(function (p) { o.set(p, i); i += p.length; }); return o;
   }
-  function Mqtt(url, topicBase, onMsg, onConn) {
-    this.url = url; this.base = topicBase; this.onMsg = onMsg; this.onConn = onConn; this.ok = false; this.buf = new Uint8Array(0); this.backoff = 1000; this.open();
+  function Mqtt(b, topicBase, onMsg, onConn) {
+    if (typeof b === 'string') b = { url: b };
+    this.url = b.url; this.user = b.user; this.pass = b.pass; this.base = topicBase; this.onMsg = onMsg; this.onConn = onConn; this.ok = false; this.buf = new Uint8Array(0); this.backoff = 1000; this.open();
   }
   Mqtt.prototype.open = function () {
     var self = this, ws;
@@ -64,7 +68,8 @@
     ws.binaryType = 'arraybuffer'; this.ws = ws;
     ws.onopen = function () {
       var id = 'tt-' + me + '-' + Math.random().toString(36).slice(2, 6);
-      ws.send(packet(0x10, [str('MQTT'), new Uint8Array([4, 2, 0, 30]), str(id)]));
+      if (self.user) ws.send(packet(0x10, [str('MQTT'), new Uint8Array([4, 0xC2, 0, 30]), str(id), str(self.user), str(self.pass || '')]));
+      else ws.send(packet(0x10, [str('MQTT'), new Uint8Array([4, 2, 0, 30]), str(id)]));
     };
     ws.onmessage = function (e) { self.feed(new Uint8Array(e.data)); };
     ws.onclose = function () { self.ok = false; clearInterval(self.ping); self.onConn(); self.retry(); };
@@ -100,14 +105,14 @@
     try { this.ws.send(packet(retain ? 0x31 : 0x30, [str(this.base + '/' + sub), utf8(JSON.stringify(obj))])); } catch (e) {}
   };
 
+  var DEFAULT_ROOM = 'ziadtagteam';
   function roomCode() {
     var h = new URLSearchParams((location.hash.split('?')[1] || location.hash.split('&').slice(1).join('&')) || '');
     var q = new URLSearchParams(location.search);
     var c = q.get('room') || h.get('room');
-    try { if (!c) c = localStorage.getItem('tt_room'); } catch (e) {}
-    if (!c && cfg.role === 'control') c = Math.random().toString(36).slice(2, 8);
-    if (c) { c = c.replace(/[^a-z0-9]/gi, '').slice(0, 16).toLowerCase(); try { localStorage.setItem('tt_room', c); } catch (e) {} }
-    return c;
+    // fixed default room: phone and screen always meet without typing anything
+    if (!c) c = DEFAULT_ROOM;
+    return c.replace(/[^a-z0-9]/gi, '').slice(0, 24).toLowerCase() || DEFAULT_ROOM;
   }
 
   function startMqtt() {
@@ -116,8 +121,10 @@
     if (!code) { setStatus({ mode: 'mqtt', connected: false, note: 'أدخل رمز الغرفة' }); return; }
     var base = 'tagteam-arena/v1/' + code;
     var qb = new URLSearchParams(location.search).get('broker');
-    var urls = qb && /^wss?:\/\//.test(qb) ? [qb] : (cfg.brokers || ['wss://broker.emqx.io:8084/mqtt', 'wss://broker.hivemq.com:8884/mqtt']);
-    function onConn() { setStatus({ mode: 'mqtt', connected: mq.some(function (m) { return m.ok; }) }); if (cfg.role === 'control') { heartbeat(); if (cfg.getBank) pubBank(cfg.getBank()); } }
+    var urls = qb && /^wss?:\/\//.test(qb) ? [qb] : (cfg.brokers || [
+      { url: 'wss://public.cloud.shiftr.io', user: 'public', pass: 'public' },
+      'wss://broker.emqx.io:8084/mqtt', 'wss://broker.hivemq.com:8884/mqtt', 'wss://test.mosquitto.org:8081']);
+    function onConn() { var n = mq.filter(function (m) { return m.ok; }).length; setStatus({ mode: 'mqtt', connected: n > 0, links: n, linksTotal: mq.length }); if (cfg.role === 'control') { heartbeat(); if (cfg.getBank) pubBank(cfg.getBank()); } }
     function onMsg(sub, obj) {
       if (sub === 'state') receive(obj, 'mqtt');
       else if (sub === 'bank2' && cfg.onBank && obj && Array.isArray(obj.list)) cfg.onBank(obj.list);
