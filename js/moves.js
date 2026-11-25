@@ -81,6 +81,7 @@
     $('menuView').hidden = m !== 'menu';
     $('movesView').hidden = m !== 'moves';
     $('stageWrap').style.visibility = m === 'quiz' ? 'visible' : 'hidden';
+    $('scrHome').hidden = m === 'menu';
     if (m !== mode) {
       if (mode === 'moves') stopVideo();
       if (m === 'menu') { var mv0 = $('menuView'); mv0.classList.remove('intro'); void mv0.offsetWidth; mv0.classList.add('intro'); }
@@ -126,6 +127,7 @@
     var th = $('mnThumbs'); CLIPS.slice(0, 6).forEach(function (c) { var im = document.createElement('img'); im.src = c.thumbnail; im.alt = ''; im.loading = 'lazy'; im.onerror = function () { im.remove(); }; th.appendChild(im); });
     document.querySelectorAll('#screen [data-mode]').forEach(function (b) { b.addEventListener('click', function () { setMode(b.dataset.mode); }); });
     document.querySelectorAll('#movesView [data-mv]').forEach(function (b) { b.addEventListener('click', function () { act(b.dataset.mv); }); });
+    $('scrHome').addEventListener('click', function () { setMode('menu'); });
     $('mvFull').addEventListener('click', function () {
       var el = $('mvPlayerWrap');
       try { if (document.fullscreenElement) document.exitFullscreen(); else (el.requestFullscreen || el.webkitRequestFullscreen).call(el); } catch (e) {}

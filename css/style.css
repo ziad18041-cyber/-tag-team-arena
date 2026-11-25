@@ -309,7 +309,9 @@ textarea{width:100%;font:inherit;font-size:14px;line-height:1.6;background:#050b
 @media (min-width:900px){#control{max-width:880px}.cp-tags{grid-template-columns:1fr 1fr}}
 
 .so-switch{font-size:18px;padding:12px 22px;border-radius:12px;border:1px solid #5b7bb6;background:#0b1630;color:#dfe8ff}
-.scr-switch{position:fixed;bottom:10px;right:10px;z-index:130;font-size:15px;padding:10px 14px;border-radius:10px;border:1px solid #8fb0ff;background:#0b1630e6;color:#fff;opacity:.75}
+.scr-dock{position:fixed;bottom:10px;right:10px;z-index:130;display:flex;gap:8px}
+.scr-home{font-size:15px;padding:10px 14px;border-radius:10px;border:1px solid var(--yel);background:#2a1d02e6;color:#ffe58a;opacity:.85}
+.scr-switch{font-size:15px;padding:10px 14px;border-radius:10px;border:1px solid #8fb0ff;background:#0b1630e6;color:#fff;opacity:.75}
 .scr-switch:hover,.scr-switch:focus{opacity:1}
 
 .cp-setup{background:#0b1630;border:2px solid #e9f0ff55;border-radius:14px;padding:10px 12px}
