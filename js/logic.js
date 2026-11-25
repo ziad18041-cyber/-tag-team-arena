@@ -237,9 +237,9 @@
     return bump(S, clk, { t: 'mode', s: null, a: mode, b: null });
   };
   function mvInit(mv, n) {
-    if (mv && Array.isArray(mv.order) && mv.order.length === n) return mv;
+    if (mv && mv.set === 'fin1' && Array.isArray(mv.order) && mv.order.length === n) return mv;
     var o = []; for (var i = 0; i < n; i++) o.push(i);
-    return { i: 0, order: o, play: false, started: false, rs: 0, t: {}, mk: 0 };
+    return { set: 'fin1', i: 0, order: o, play: false, started: false, rs: 0, t: {}, mk: 0 };
   }
   // ---- imitation challenge ----
   A.moves = function (S, clk, op, arg) {
