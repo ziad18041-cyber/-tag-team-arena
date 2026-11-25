@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#060a18">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>TAG TEAM | الاستنزاف — ROUND 01</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ CHOOSER ============ -->
+<section id="chooser" class="view">
+  <div class="ch-wrap">
+    <div class="ch-logo"><span class="tt">TAG TEAM</span><span class="ar">الاستنزاف</span><span class="rd">ROUND 01</span></div>
+    <p class="ch-sub">اختر دور هذا الجهاز</p>
+    <button class="ch-btn blue" id="goScreen"><b>🖥️ شاشة الجمهور</b><small>على اللابتوب / الشاشة الكبيرة</small></button>
+    <button class="ch-btn yellow" id="goControl"><b>📱 لوحة التحكم</b><small>على الجوال</small></button>
+    <p class="ch-note">افتح نفس الرابط على الجهازين، واختر دور كل جهاز. المزامنة تلقائية.</p>
+  </div>
+</section>
+
+<!-- ============ AUDIENCE SCREEN ============ -->
+<section id="screen" class="view" hidden>
+  <div id="stageWrap">
+    <div id="stage" class="phase-ready">
+      <div id="cam">
+        <div class="arena-bg">
+          <canvas id="crowd" width="960" height="420"></canvas>
+          <div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div><div class="beam b4"></div>
+          <div class="led led-l"><span>TAG TEAM • الاستنزاف • TAG TEAM • الاستنزاف •</span></div>
+          <div class="led led-r"><span>TAG TEAM • الاستنزاف • TAG TEAM • الاستنزاف •</span></div>
+          <div class="truss"></div>
+          <div class="team-glow g0"></div><div class="team-glow g1"></div>
+        </div>
+        <div class="ring">
+          <div class="rope r1"></div><div class="rope r2"></div><div class="rope r3"></div>
+          <div class="post p0"></div><div class="post p1"></div>
+          <div class="apron"><span>TAG TEAM</span><i></i><span>الاستنزاف</span></div>
+        </div>
+        <div id="figs"></div>
+        <div class="vs" id="vs">VS</div>
+      </div>
+
+      <!-- HUD -->
+      <div class="hud">
+        <div class="clock c0" id="clock0">
+          <div class="clk-label">الفريق الأزرق</div>
+          <div class="clk-digits" id="t0">02:00</div>
+          <div class="clk-bar"><i id="bar0"></i></div>
+          <div class="clk-turn">على الساعة</div>
+        </div>
+        <div class="press p0" id="press0">
+          <svg viewBox="0 0 60 130" aria-hidden="true"><defs>
+            <linearGradient id="pg0" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff2a2a"/><stop id="pgs0" offset="0" stop-color="#ff2a2a"/><stop id="pge0" offset="0" stop-color="#7b8499"/><stop offset="1" stop-color="#7b8499"/></linearGradient></defs>
+            <path class="body" fill="url(#pg0)" d="M30 2a11 11 0 1 1 0 22a11 11 0 1 1 0-22zM17 28q13-5 26 0l9 30q2 6-3 7l-5-1-5-17v20l5 58h-11l-3-40-3 40h-11l5-58v-20l-5 17-5 1q-5-1-3-7z"/></svg>
+          <div class="press-val" id="pv0">0%</div><div class="press-lbl">الضغط</div>
+        </div>
+        <div class="title">
+          <div class="tt">TAG TEAM</div>
+          <div class="ar">الاستنزاف</div>
+          <div class="rd">ROUND 01</div>
+        </div>
+        <div class="press p1" id="press1">
+          <svg viewBox="0 0 60 130" aria-hidden="true"><defs>
+            <linearGradient id="pg1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff2a2a"/><stop id="pgs1" offset="0" stop-color="#ff2a2a"/><stop id="pge1" offset="0" stop-color="#7b8499"/><stop offset="1" stop-color="#7b8499"/></linearGradient></defs>
+            <path class="body" fill="url(#pg1)" d="M30 2a11 11 0 1 1 0 22a11 11 0 1 1 0-22zM17 28q13-5 26 0l9 30q2 6-3 7l-5-1-5-17v20l5 58h-11l-3-40-3 40h-11l5-58v-20l-5 17-5 1q-5-1-3-7z"/></svg>
+          <div class="press-val" id="pv1">0%</div><div class="press-lbl">الضغط</div>
+        </div>
+        <div class="clock c1" id="clock1">
+          <div class="clk-label">الفريق الأصفر</div>
+          <div class="clk-digits" id="t1">02:00</div>
+          <div class="clk-bar"><i id="bar1"></i></div>
+          <div class="clk-turn">على الساعة</div>
+        </div>
+
+        <div class="qpanel" id="qpanel">
+          <div class="qtext" id="qtext"></div>
+          <div class="qnum" id="qnum">السؤال 01 من 50</div>
+        </div>
+
+        <div class="roster r0" id="roster0"><div class="r-title">الفريق الأزرق</div><div class="r-faces"></div></div>
+        <div class="center-chip" id="chip">استعداد</div>
+        <div class="roster r1" id="roster1"><div class="r-title">الفريق الأصفر</div><div class="r-faces"></div></div>
+      </div>
+
+      <!-- FX -->
+      <div class="fx">
+        <div class="vignette" id="vig"></div>
+        <canvas id="particles" width="1920" height="1080"></canvas>
+        <div class="dim" id="dim"></div>
+        <div class="hero" id="hero"><div class="hero-name" id="heroName"></div><img id="heroImg" alt=""><div class="hero-plate" id="heroPlate"></div><div class="hero-out" id="heroOut"></div></div>
+        <div class="stripes" id="stripes"></div>
+        <div class="countdown" id="count"></div>
+        <div class="big" id="big"><div class="big-main" id="bigMain"></div><div class="big-sub" id="bigSub"></div></div>
+        <div class="flash" id="flash"></div>
+        <div class="bars"><i class="top"></i><i class="bot"></i></div>
+        <div class="paused-tag" id="pausedTag">⏸ إيقاف مؤقت</div>
+      </div>
+    </div>
+  </div>
+  <div id="startOverlay"><button id="startShow">▶ ابدأ العرض<small>تفعيل الصوت وملء الشاشة</small></button><div class="so-status" id="soStatus"></div></div>
+  <div id="scrStatus" class="scr-status"></div>
+  <div id="roomAsk" hidden><div class="ra-box"><b>رمز الغرفة</b><p>اكتب الرمز الظاهر في لوحة التحكم</p><input id="roomInput" inputmode="latin" autocomplete="off"><button id="roomGo">اتصال</button></div></div>
+</section>
+
+<!-- ============ CONTROL PANEL ============ -->
+<section id="control" class="view" hidden>
+  <header class="cp-top">
+    <div class="cp-brand">TAG TEAM <span>لوحة التحكم</span></div>
+    <div class="cp-conn" id="conn"><i></i><span>…</span></div>
+  </header>
+
+  <div class="cp-clocks">
+    <div class="cp-clock b" id="cc0"><small>الأزرق</small><b id="ct0">02:00</b><em id="cn0"></em></div>
+    <div class="cp-phase" id="cphase">جاهز</div>
+    <div class="cp-clock y" id="cc1"><small>الأصفر</small><b id="ct1">02:00</b><em id="cn1"></em></div>
+  </div>
+
+  <div class="cp-answers">
+    <button class="cp-ans b" id="ans0">✓ جاوب الأزرق</button>
+    <button class="cp-ans y" id="ans1">✓ جاوب الأصفر</button>
+  </div>
+
+  <div class="cp-transport">
+    <button class="cp-btn start" id="bStart">▶ بدء الراوند</button>
+    <button class="cp-btn" id="bPause">⏸ إيقاف مؤقت</button>
+    <button class="cp-btn" id="bUndo">↶ تراجع</button>
+    <button class="cp-btn danger" id="bReset">⟲ إعادة الراوند</button>
+  </div>
+
+  <div class="cp-q">
+    <div class="cp-qhead"><span id="cqn">السؤال 1 من 50</span><button class="cp-mini" id="bPrevQ">السابق</button></div>
+    <div class="cp-qtext" id="cq"></div>
+    <div class="cp-qnext">التالي: <span id="cqNext"></span></div>
+    <button class="cp-btn next" id="bNext">⏭ السؤال التالي</button>
+  </div>
+
+  <div class="cp-tags">
+    <div class="cp-team b"><div class="cp-th">تبديل الأزرق — اختر الداخل</div><div class="cp-faces" id="tag0"></div></div>
+    <div class="cp-team y"><div class="cp-th">تبديل الأصفر — اختر الداخل</div><div class="cp-faces" id="tag1"></div></div>
+  </div>
+
+  <details class="cp-set" id="settings">
+    <summary>⚙️ الإعدادات</summary>
+    <div class="cp-row"><span>الفريق الذي يبدأ</span><div class="seg"><button id="st0">الأزرق</button><button id="st1">الأصفر</button></div></div>
+    <div class="cp-row col"><span>توزيع الفرق (قبل البدء)</span><div class="cp-teamset" id="teamset"></div></div>
+    <div class="cp-row"><span>وقت كل فريق</span><div class="seg" id="durSeg"><button data-d="60000">1:00</button><button data-d="90000">1:30</button><button data-d="120000">2:00</button><button data-d="180000">3:00</button></div></div>
+    <div class="cp-row"><span>تصحيح الوقت</span><div class="adj"><button data-a="0,-5000">أزرق −5</button><button data-a="0,5000">أزرق +5</button><button data-a="1,-5000">أصفر −5</button><button data-a="1,5000">أصفر +5</button></div></div>
+    <div class="cp-row"><span>صوت شاشة الجمهور</span><div class="seg"><button id="snd1">تشغيل</button><button id="snd0">كتم</button></div></div>
+    <div class="cp-row col"><span>بنك الأسئلة (سؤال في كل سطر)</span><textarea id="bankText" rows="8"></textarea>
+      <div class="adj"><button id="bankSave">حفظ البنك</button><button id="bankShuffle">خلط الترتيب</button><button id="bankDefault">الأسئلة الافتراضية</button></div><small id="bankInfo"></small></div>
+    <div class="cp-row col" id="roomRow" hidden><span>رمز الغرفة (للربط بين الأجهزة)</span><b id="roomCode" class="room-code"></b><small id="roomLinks"></small></div>
+    <div class="cp-row"><button class="cp-mini" id="switchRole">تغيير دور الجهاز</button><button class="cp-mini" id="wakeBtn">إبقاء الشاشة مضاءة</button></div>
+  </details>
+  <div class="cp-toast" id="toast"></div>
+</section>
+
+<script src="js/questions.js"></script>
+<script src="js/logic.js"></script>
+<script src="js/sync.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/screen.js"></script>
+<script src="js/control.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
