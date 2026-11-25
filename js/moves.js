@@ -98,6 +98,8 @@
     $('mvWrestler').textContent = c ? c.wrestler : '';
     $('mvMove').textContent = c ? c.moveName + (c.moveNameAr ? ' — ' + c.moveNameAr : '') : '';
     $('mvToggle').textContent = mv.play ? '⏸ إيقاف مؤقت' : '▶ تشغيل';
+    $('mvPlayerWrap').style.setProperty('--mvb', mv.br || 1.3);
+    $('mvFsName').textContent = (mv.started ? String(mv.i + 1).padStart(2, '0') + ' / ' + CLIPS.length + '  •  ' : 'مثال  •  ') + (c ? c.wrestler + ' — ' + c.moveName : '');
     if (!player || !player.loadVideoById || !c) return;
     var t = times(c), key = c.videoId + ':' + (mv.started ? mv.i : 'ex') + ':' + mv.rs + ':' + t.s + ':' + t.e;
     if (key !== loadedKey) {
@@ -128,6 +130,16 @@
     document.querySelectorAll('#screen [data-mode]').forEach(function (b) { b.addEventListener('click', function () { setMode(b.dataset.mode); }); });
     document.querySelectorAll('#movesView [data-mv]').forEach(function (b) { b.addEventListener('click', function () { act(b.dataset.mv); }); });
     $('scrHome').addEventListener('click', function () { setMode('menu'); });
+    $('mvFsExit').addEventListener('click', function () { try { document.exitFullscreen(); } catch (e) {} });
+    // keyboard on the laptop: → next, ← previous, space play/pause, R replay, F fullscreen
+    document.addEventListener('keydown', function (e) {
+      if (!S || S.mode !== 'moves' || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+      var k = e.key;
+      if (k === 'ArrowRight' || k === 'ArrowLeft') { e.preventDefault(); act(S.mv && S.mv.started ? (k === 'ArrowRight' ? 'next' : 'prev') : 'start'); }
+      else if (k === ' ') { e.preventDefault(); act('toggle'); }
+      else if (k === 'r' || k === 'R') act('replay');
+      else if (k === 'f' || k === 'F') $('mvFull').click();
+    });
     $('mvFull').addEventListener('click', function () {
       var el = $('mvPlayerWrap');
       try { if (document.fullscreenElement) document.exitFullscreen(); else (el.requestFullscreen || el.webkitRequestFullscreen).call(el); } catch (e) {}

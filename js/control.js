@@ -81,8 +81,9 @@
     var ph = { ready: 'جاهز للبدء', live: 'الدور على ' + TEAM[S.turn], paused: 'متوقف مؤقتًا', over: '' }[S.phase];
     if (over) ph = '🏆 فاز ' + TEAM[w];
     $('cphase').textContent = ph;
-    $('bStart').disabled = S.phase !== 'ready';
-    $('bStart').textContent = S.phase === 'ready' ? '▶ بدء الراوند' : '● جارٍ';
+    $('bStart').disabled = live && !over;
+    $('bStart').textContent = S.phase === 'ready' ? '▶ بدء الراوند' : S.phase === 'paused' ? '▶ استئناف الراوند' : over ? '↻ راوند جديد' : '● جارٍ';
+    $('bStart').classList.toggle('pulse', S.phase === 'paused');
     $('bPause').disabled = !(live || S.phase === 'paused') || over;
     $('bPause').textContent = S.phase === 'paused' ? '▶ استئناف' : '⏸ إيقاف مؤقت';
     $('bUndo').disabled = !hist.length;
@@ -175,7 +176,15 @@
 
     $('ans0').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 0, bank); });
     $('ans1').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 1, bank); });
-    $('bStart').addEventListener('click', function () { wakeLock(); if (S.v === 0) S = TT.fresh({ bank: bank, clk: me }); act('start'); });
+    $('bStart').addEventListener('click', function () {
+      wakeLock();
+      var over = S.phase === 'over' || (S.phase === 'live' && rem(S.turn) <= 0);
+      if (S.phase === 'paused') { act('resume'); return; }
+      if (over) { if (act('reset', bank)) toast('راوند جديد — اضغط «بدء الراوند» لما تكون جاهز'); return; }
+      if (S.v === 0) S = TT.fresh({ bank: bank, clk: me });
+      if (S.mode && S.mode !== 'quiz') act('setMode', 'quiz');
+      act('start');
+    });
     $('bPause').addEventListener('click', function () { act(S.phase === 'paused' ? 'resume' : 'pause'); });
     $('bNext').addEventListener('click', function () { act('next', bank); });
     $('bPrevQ').addEventListener('click', function () { act('prevQ', bank); });

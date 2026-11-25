@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>TAG TEAM | الاستنزاف — ROUND 01</title>
-<link rel="stylesheet" href="css/style.css?v=1795571804">
+<link rel="stylesheet" href="css/style.css?v=1795572412">
 </head>
 <body>
 
@@ -143,6 +143,8 @@
           <div id="ytPlayer"></div>
           <div class="mv-msg" id="mvMsg" hidden></div>
           <div class="mv-badge" id="mvBadge">مقطع المثال</div>
+          <div class="mv-fsbar"><span class="mv-fsname" id="mvFsName"></span>
+            <span class="mv-fsbtns"><button type="button" data-mv="prev">⏮</button><button type="button" data-mv="toggle">⏯</button><button type="button" data-mv="next">التالي ⏭</button><button type="button" id="mvFsExit">✕</button></span></div>
         </div>
         <div class="mv-info"><b id="mvWrestler"></b><span id="mvMove"></span></div>
         <div class="mv-ctrl" id="mvCtrl">
@@ -189,6 +191,7 @@
       <button class="cp-btn" data-mv="shuffle">🔀 عشوائي</button>
       <button class="cp-btn" data-mv="unshuffle">الترتيب الأصلي</button>
     </div>
+    <div class="cpm-bright"><span>سطوع المقاطع</span><button class="cp-mini" data-br="-0.1">−</button><b id="cpmBr">130%</b><button class="cp-mini" data-br="0.1">+</button></div>
     <button class="cp-btn" data-mv="cover">عرض الغلاف ومقطع المثال</button>
     <details class="cpm-time"><summary>ضبط بداية ونهاية المقطع (اختياري)</summary>
       <p>شغّل المقطع، ولما توصل للحركة اضغط «البداية هنا»، ولما تخلص اضغط «النهاية هنا». يتحفظ تلقائيًا.</p>
@@ -198,7 +201,11 @@
     <div class="cpm-list" id="cpmList"></div>
   </section>
 
-  <section id="cpMenu" class="cp-menu" hidden><p>الشاشة الآن على القائمة الرئيسية. اختر التحدي من الأزرار فوق.</p></section>
+  <section id="cpMenu" class="cp-menu" hidden>
+    <p>شاشة الجمهور الآن على القائمة الرئيسية. اختر التحدي:</p>
+    <button class="cp-btn start" data-go="quiz" type="button">▶ التحدي الأول — الاستنزاف</button>
+    <button class="cp-btn" data-go="moves" type="button">▶ تحدي التقليد</button>
+  </section>
 
   <div id="cpQuiz">
   <div class="cp-clocks">
@@ -258,15 +265,15 @@
   <div class="cp-toast" id="toast"></div>
 </section>
 
-<script src="js/questions.js?v=1795571804"></script>
-<script src="js/logic.js?v=1795571804"></script>
-<script src="js/sync.js?v=1795571804"></script>
-<script src="js/sfx.js?v=1795571804"></script>
-<script src="js/moves-data.js?v=1795571804"></script>
-<script src="js/screen.js?v=1795571804"></script>
-<script src="js/moves.js?v=1795571804"></script>
-<script src="js/control.js?v=1795571804"></script>
-<script src="js/control-moves.js?v=1795571804"></script>
-<script src="js/main.js?v=1795571804"></script>
+<script src="js/questions.js?v=1795572412"></script>
+<script src="js/logic.js?v=1795572412"></script>
+<script src="js/sync.js?v=1795572412"></script>
+<script src="js/sfx.js?v=1795572412"></script>
+<script src="js/moves-data.js?v=1795572412"></script>
+<script src="js/screen.js?v=1795572412"></script>
+<script src="js/moves.js?v=1795572412"></script>
+<script src="js/control.js?v=1795572412"></script>
+<script src="js/control-moves.js?v=1795572412"></script>
+<script src="js/main.js?v=1795572412"></script>
 </body>
 </html>

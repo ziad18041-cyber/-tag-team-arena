@@ -261,6 +261,7 @@
         for (var i = mv.order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = mv.order[i]; mv.order[i] = mv.order[j]; mv.order[j] = x; }
         mv.i = 0; mv.play = true; mv.rs++; break;
       case 'unshuffle': mv.order = mv.order.slice().sort(function (a, b) { return a - b; }); mv.i = 0; mv.rs++; break;
+      case 'bright': mv.br = Math.max(0.8, Math.min(2, Math.round(((mv.br || 1.3) + arg) * 10) / 10)); break;
       case 'mark': mv.mk = (mv.mk || 0) + 1; mv.mkw = arg; break;            // ask the screen to stamp start/end at its current time
       case 'times': mv.t[arg.id] = [arg.s, arg.e]; break;                   // screen writes the stamped times
       case 'cleartimes': delete mv.t[arg]; break;
