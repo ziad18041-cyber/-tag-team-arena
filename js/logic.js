@@ -38,6 +38,7 @@
       q: bank[0] || '',
       mute: !!opts.mute,
       round: opts.round || 1,
+      auto: opts.auto !== false,
       ev: { n: (opts.evn || 0) + 1, t: 'reset', s: null, a: null, b: null }
     };
   }
@@ -84,12 +85,14 @@
     S.times = [S.dur, S.dur];
     return bump(S, clk, { t: 'intro', s: S.turn, a: null, b: null });
   };
-  A.answer = function (S, clk, side) {
+  A.answer = function (S, clk, side, bank) {
     if (S.phase !== 'live' || S.turn !== side) return null;
     S = clone(S);
     if (settle(S) === 'timeout') return bump(S, clk, timeoutEvent(S));
     S.turn = 1 - side;
-    return bump(S, clk, { t: 'answer', s: side, a: S.active[side], b: null });
+    var moved = null;
+    if (S.auto !== false && bank && bank.length) { S.qi = (S.qi + 1) % bank.length; S.qn = bank.length; S.q = bank[S.qi]; moved = 'q'; }
+    return bump(S, clk, { t: 'answer', s: side, a: S.active[side], b: moved });
   };
   A.pause = function (S, clk) {
     if (S.phase !== 'live') return null;
@@ -131,7 +134,7 @@
     return bump(S, clk, { t: 'tag', s: side, a: id, b: out });
   };
   A.reset = function (S, clk, bank) {
-    var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: bank, v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute, round: S.round });
+    var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: bank, v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute, round: S.round, auto: S.auto });
     N.active = S.active.slice();
     // keep the current question position so the host doesn't lose place
     if (bank && bank.length) { N.qi = S.qi % bank.length; N.q = bank[N.qi]; N.qn = bank.length; }
@@ -179,6 +182,7 @@
     S = clone(S); S.round = n;
     return bump(S, clk, { t: 'roster', s: null, a: null, b: null });
   };
+  A.setAuto = function (S, clk, on) { if ((S.auto !== false) === !!on) return null; S = clone(S); S.auto = !!on; return bump(S, clk, null); };
   A.mute = function (S, clk, m) { S = clone(S); S.mute = !!m; return bump(S, clk, null); };
   A.bank = function (S, clk, bank) {
     S = clone(S);

@@ -104,6 +104,7 @@
     $('durVal').textContent = TT.fmt(S.dur);
     $('durSeg').querySelectorAll('button').forEach(function (bt) { bt.classList.toggle('on', +bt.dataset.d === S.dur); });
     $('roundSeg').querySelectorAll('button').forEach(function (bt) { bt.classList.toggle('on', +bt.dataset.r === (S.round || 1)); });
+    $('auto1').classList.toggle('on', S.auto !== false); $('auto0').classList.toggle('on', S.auto === false);
     $('snd1').classList.toggle('on', !S.mute); $('snd0').classList.toggle('on', !!S.mute);
   }
 
@@ -156,8 +157,8 @@
     S = TT.fresh({ bank: bank, clk: me }); S.v = 0;
     buildFaces(); render();
 
-    $('ans0').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 0); });
-    $('ans1').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 1); });
+    $('ans0').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 0, bank); });
+    $('ans1').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 1, bank); });
     $('bStart').addEventListener('click', function () { wakeLock(); if (S.v === 0) S = TT.fresh({ bank: bank, clk: me }); act('start'); });
     $('bPause').addEventListener('click', function () { act(S.phase === 'paused' ? 'resume' : 'pause'); });
     $('bNext').addEventListener('click', function () { act('next', bank); });
@@ -178,6 +179,8 @@
     $('durPlus').addEventListener('click', function () { act('setDur', S.dur + 30000); });
     $('roundSeg').querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { act('setRound', +b.dataset.r); }); });
     document.querySelectorAll('[data-a]').forEach(function (b) { b.addEventListener('click', function () { var a = b.dataset.a.split(','); if (act('adjust', +a[0], +a[1])) toast('تم تعديل الوقت'); }); });
+    $('auto1').addEventListener('click', function () { act('setAuto', true); });
+    $('auto0').addEventListener('click', function () { act('setAuto', false); });
     $('snd1').addEventListener('click', function () { act('mute', false); });
     $('snd0').addEventListener('click', function () { act('mute', true); });
     $('bankSave').addEventListener('click', function () { if (setBank($('bankText').value.split('\n'), true)) { act('bank', bank); toast('حُفظ بنك الأسئلة (' + bank.length + ')'); } else toast('البنك فارغ'); });

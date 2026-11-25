@@ -346,6 +346,7 @@
   SC.answer = function (ev) {
     var k = ev.s, col = COLORS[k], nk = 1 - k;
     flash(col); sfx('correct'); setCheer(.9, 1800);
+    if (ev.b === 'q') SC.next();
     big('✓ إجابة صحيحة', P[S.active[k]].name, col);
     pose(S.active[k], 'p-hype');
     shot(k === 0 ? 'blueClose' : 'yellowClose');
