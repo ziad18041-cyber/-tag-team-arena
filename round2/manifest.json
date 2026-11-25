@@ -661,8 +661,8 @@
   },
   {
     "image": "characters/characters_05.png",
-    "answer": "المتشرد (تشارلي تشابلن)",
-    "answer_en": "The Tramp — Charlie Chaplin",
+    "answer": "المتشرد",
+    "answer_en": "The Tramp (Little Tramp)",
     "category": "characters",
     "difficulty": "easy",
     "example": false,
@@ -684,7 +684,7 @@
   {
     "image": "characters/characters_07.jpg",
     "answer": "دراكولا",
-    "answer_en": "Dracula — Bela Lugosi",
+    "answer_en": "Count Dracula",
     "category": "characters",
     "difficulty": "easy",
     "example": false,
@@ -793,8 +793,8 @@
   },
   {
     "image": "characters/characters_17.jpg",
-    "answer": "الدكتور",
-    "answer_en": "The Doctor",
+    "answer": "الدكتور (دكتور هو)",
+    "answer_en": "The Doctor — Doctor Who",
     "category": "characters",
     "difficulty": "medium",
     "example": false,

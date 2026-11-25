@@ -243,6 +243,21 @@
     }
     return bump(S, clk, { t: 'roster', s: null, a: null, b: null });
   };
+  // make the question on display match the round's bank (e.g. a state saved by an older version with round 2 = text)
+  A.fixBank = function (S, clk, bank) {
+    if (S.phase !== 'ready' || !bank || !bank.length) return null;
+    var want = kind(S.round || 1), has = S.qimg ? 'img' : 'txt';
+    if (want === has) return null;
+    S = clone(S);
+    S.usedBy = S.usedBy || {}; S.durBy = S.durBy || {};
+    var u = Array.isArray(S.used) ? S.used.slice() : []; u.pop();
+    S.usedBy[has] = u; S.durBy[has] = S.dur;
+    S.used = (S.usedBy[want] || []).slice();
+    S.dur = S.durBy[want] || (want === 'img' ? IMG_DUR : DUR); S.times = [S.dur, S.dur];
+    if (!nextQ(S, bank)) { S.used = []; nextQ(S, bank); }
+    if (want === 'txt') S.qimg = '';
+    return bump(S, clk, { t: 'next', s: null, a: S.qi, b: null });
+  };
   // show / hide the answer on the audience screen (host decides)
   A.reveal = function (S, clk, on) {
     on = on === undefined ? !S.rev : !!on;

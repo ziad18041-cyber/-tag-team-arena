@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache">
-<script>window.TT_BUILD='b11250600';
+<script>window.TT_BUILD='b11250609';
 /* stale-page guard: if the server has a newer build than this cached page, reload once with a fresh URL */
 (function(){try{if(!/^https?:/.test(location.protocol)||window.claude)return;fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(v){v=(v||'').trim();if(v&&v!==window.TT_BUILD&&sessionStorage.getItem('tt_rl')!==v){sessionStorage.setItem('tt_rl',v);var u=new URL(location.href);u.searchParams.set('b',v);location.replace(u.toString())}}).catch(function(){})}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -11,7 +11,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>TAG TEAM | الاستنزاف — ROUND 01</title>
-<link rel="stylesheet" href="css/style.css?v=1795575630">
+<link rel="stylesheet" href="css/style.css?v=1795576155">
 </head>
 <body>
 
@@ -116,7 +116,7 @@
         <span class="mn-k">التحدي الأول</span>
         <b class="mn-t">الاستنزاف</b>
         <span class="mn-r"><i>ROUND 01</i> تحدي الأسئلة</span>
-        <span class="mn-r soon"><i>ROUND 02</i> تحدي الصور <em>قريبًا</em></span>
+        <span class="mn-r"><i>ROUND 02</i> تحدي الصور</span>
         <span class="mn-faces" id="mnFaces"></span>
       </button>
       <button class="mn-card c2" data-mode="moves" type="button">
@@ -207,7 +207,8 @@
 
   <section id="cpMenu" class="cp-menu" hidden>
     <p>شاشة الجمهور الآن على القائمة الرئيسية. اختر التحدي:</p>
-    <button class="cp-btn start" data-go="quiz" type="button">▶ التحدي الأول — الاستنزاف</button>
+    <button class="cp-btn start" data-go="quiz" data-r="1" type="button">▶ الاستنزاف — ROUND 01 (أسئلة)</button>
+    <button class="cp-btn start" data-go="quiz" data-r="2" type="button">▶ الاستنزاف — ROUND 02 (صور)</button>
     <button class="cp-btn" data-go="moves" type="button">▶ تحدي التقليد</button>
   </section>
 
@@ -220,7 +221,7 @@
 
   <section class="cp-setup" id="setup">
     <div class="cp-sh">تجهيز الراوند <small>(قبل البدء)</small></div>
-    <div class="cp-row"><span>الراوند</span><div class="seg" id="roundSeg"><button data-r="1">1</button><button data-r="2">2</button><button data-r="3">3</button><button data-r="4">4</button></div></div>
+    <div class="cp-row"><span>الراوند</span><div class="seg" id="roundSeg"><button data-r="1">1 أسئلة</button><button data-r="2">2 صور</button><button data-r="3">3</button><button data-r="4">4</button></div></div>
     <div class="cp-row"><span>الفريق الذي يبدأ</span><div class="seg"><button id="st0">الأزرق</button><button id="st1">الأصفر</button></div></div>
     <div class="cp-row col"><span>الوقت لكل فريق</span>
       <div class="dur"><button id="durMinus">− 30ث</button><b id="durVal">02:00</b><button id="durPlus">+ 30ث</button></div>
@@ -272,16 +273,16 @@
   <div class="cp-toast" id="toast"></div>
 </section>
 
-<script src="js/round2-data.js?v=1795575630"></script>
-<script src="js/questions.js?v=1795575630"></script>
-<script src="js/logic.js?v=1795575630"></script>
-<script src="js/sync.js?v=1795575630"></script>
-<script src="js/sfx.js?v=1795575630"></script>
-<script src="js/moves-data.js?v=1795575630"></script>
-<script src="js/screen.js?v=1795575630"></script>
-<script src="js/moves.js?v=1795575630"></script>
-<script src="js/control.js?v=1795575630"></script>
-<script src="js/control-moves.js?v=1795575630"></script>
-<script src="js/main.js?v=1795575630"></script>
+<script src="js/round2-data.js?v=1795576155"></script>
+<script src="js/questions.js?v=1795576155"></script>
+<script src="js/logic.js?v=1795576155"></script>
+<script src="js/sync.js?v=1795576155"></script>
+<script src="js/sfx.js?v=1795576155"></script>
+<script src="js/moves-data.js?v=1795576155"></script>
+<script src="js/screen.js?v=1795576155"></script>
+<script src="js/moves.js?v=1795576155"></script>
+<script src="js/control.js?v=1795576155"></script>
+<script src="js/control-moves.js?v=1795576155"></script>
+<script src="js/main.js?v=1795576155"></script>
 </body>
 </html>

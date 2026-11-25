@@ -432,7 +432,7 @@
     return { it: it && it.img === S.qimg ? it : (S.qimg ? { img: S.qimg, a: '' } : null), ex: false };
   }
   function renderImage() {
-    var on = (S.round || 1) === 2;
+    var on = (S.round || 1) === 2 && !!(S.qimg || (S.ex !== null && S.ex !== undefined));
     $('stage').classList.toggle('imground', on);
     if (!on) return;
     var r = imgItem(), it = r.it, el = $('qimgEl');

@@ -42,7 +42,17 @@
     $('modeTabs').querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { run('setMode', [b.dataset.mode]); render(); }); });
     document.querySelectorAll('#cpMoves [data-mv]').forEach(function (b) { b.addEventListener('click', function () { run('moves', [b.dataset.mv]); render(); }); });
     document.querySelectorAll('#cpMoves [data-br]').forEach(function (b) { b.addEventListener('click', function () { run('moves', ['bright', +b.dataset.br]); render(); }); });
-    document.querySelectorAll('#cpMenu [data-go]').forEach(function (b) { b.addEventListener('click', function () { run('setMode', [b.dataset.go]); render(); }); });
+    document.querySelectorAll('#cpMenu [data-go]').forEach(function (b) { b.addEventListener('click', function () {
+      run('setMode', [b.dataset.go]);
+      var r = +b.dataset.r, S = cur();
+      if (r && S && (S.round || 1) !== r) {
+        if (S.phase === 'over') run('reset', [TTControl.qb()]);
+        S = cur();
+        if (S.phase === 'ready') run('setRound', [r, TTControl.qb(r)]);
+        else TTControl.toast('الراوند الحالي شغّال — أوقفه وأعده من «إعادة الراوند» ثم اختر الراوند');
+      }
+      render();
+    }); });
     $('cpmStart').addEventListener('click', function () { run('moves', ['start']); render(); });
     document.querySelectorAll('#cpMoves [data-mark]').forEach(function (b) { b.addEventListener('click', function () { if (run('moves', ['mark', b.dataset.mark])) TTControl.toast(b.dataset.mark === 'start' ? 'تم تحديد البداية' : 'تم تحديد النهاية'); }); });
     $('cpmClear').addEventListener('click', function () { var S = cur(); var mv = S.mv; if (!mv || !mv.started) return; run('moves', ['cleartimes', CLIPS[mv.order[mv.i]].id]); render(); });

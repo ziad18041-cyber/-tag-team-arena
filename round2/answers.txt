@@ -66,9 +66,9 @@ R02-065 | characters/characters_01.jpg | هيول بابينو | Huell Babineaux
 R02-066 | characters/characters_02.jpg | جاك سبارو | Jack Sparrow
 R02-067 | characters/characters_03.jpg | مستر بين | Mr. Bean
 R02-068 | characters/characters_04.jpg | سول غودمان | Saul Goodman — Better Call Saul
-R02-069 | characters/characters_05.png | المتشرد (تشارلي تشابلن) | The Tramp — Charlie Chaplin
+R02-069 | characters/characters_05.png | المتشرد | The Tramp (Little Tramp)
 R02-070 | characters/characters_06.jpg | شيرلوك هولمز | Sherlock Holmes
-R02-071 | characters/characters_07.jpg | دراكولا | Dracula — Bela Lugosi
+R02-071 | characters/characters_07.jpg | دراكولا | Count Dracula
 R02-072 | characters/characters_08.jpg | وحش فرانكنشتاين | Frankenstein’s Monster
 R02-073 | characters/characters_09.jpg | جيمس بوند | James Bond
 R02-074 | characters/characters_10.jpg | إنديانا جونز | Indiana Jones
@@ -78,7 +78,7 @@ R02-077 | characters/characters_13.jpg | الجوكر | The Joker
 R02-078 | characters/characters_14.jpg | باتمان | Batman
 R02-079 | characters/characters_15.jpg | وندر وومان | Wonder Woman
 R02-080 | characters/characters_16.jpg | وينزداي آدامز | Wednesday Addams
-R02-081 | characters/characters_17.jpg | الدكتور | The Doctor
+R02-081 | characters/characters_17.jpg | الدكتور (دكتور هو) | The Doctor — Doctor Who
 R02-082 | characters/characters_18.png | دون فيتو كورليوني | Don Vito Corleone — The Godfather
 R02-083 | characters/characters_19.jpg | بوباي | Popeye
 R02-084 | characters/characters_20.png | بيتي بوب | Betty Boop

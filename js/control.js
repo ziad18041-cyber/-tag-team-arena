@@ -19,11 +19,13 @@
 
   // ROUND 02 = image bank (round2/), other rounds = text bank
   function qb(r) { r = r || (S && S.round) || 1; return r === 2 ? (window.TT_IMAGE_QUESTIONS || []) : bank; }
+  var fixT = 0;
+  function fixSoon() { clearTimeout(fixT); fixT = setTimeout(function () { if (S && S.v > 0 && S.phase === 'ready') act('fixBank', qb()); }, 400); }
   function act(name) {
     var args = Array.prototype.slice.call(arguments, 1);
     var base = own(S);
     var N = A[name].apply(null, [base, me].concat(args));
-    if (!N) { buzz([30, 40, 30]); render(); return false; }
+    if (!N) { if (name !== 'fixBank') buzz([30, 40, 30]); render(); return false; }
     hist.push(S); if (hist.length > 40) hist.shift();
     S = N; TTSync.publish(S); buzz(); render();
     return true;
@@ -154,9 +156,9 @@
     if (!upgraded && !Array.isArray(N.used) && N.phase !== 'live' && N.phase !== 'paused') {
       upgraded = true; S = N; setTimeout(function () { act('reset', qb()); }, 0); return;
     }
-    if (via === 'cache' || !S) { S = N; adopted = true; render(); return; }
+    if (via === 'cache' || !S) { S = N; adopted = true; render(); fixSoon(); return; }
     if (N.clk !== me) hist = []; // another controller acted: our undo history no longer applies
-    S = N; render();
+    S = N; render(); fixSoon();
   }
 
   function setBank(list, save) {
@@ -250,7 +252,7 @@
     TTSync.init({ role: 'control', onState: onState, onStatus: status, getBank: function () { return bank; },
       onBank: function (list) { if (Array.isArray(list) && list.length && JSON.stringify(list) !== JSON.stringify(bank)) { setBank(list, false); try { localStorage.setItem('tt_bank_v2', JSON.stringify(list)); } catch (e) {} render(); } } });
     setInterval(tick, 100);
-    window.TTControl = { state: function () { return S; }, hist: function () { return hist.length; }, bank: function () { return bank; }, act: act, toast: toast };
+    window.TTControl = { state: function () { return S; }, hist: function () { return hist.length; }, bank: function () { return bank; }, qb: qb, act: act, toast: toast };
     if (window.TTControlMovesStart) window.TTControlMovesStart();
   }
   window.TTControlStart = start;
