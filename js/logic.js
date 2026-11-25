@@ -20,7 +20,7 @@
     var teams = opts.teams || [[0, 1, 2], [3, 4, 5]];
     var dur = opts.dur || DUR;
     var bank = opts.bank || window.TT_DEFAULT_QUESTIONS || [];
-    return {
+    var S = {
       app: 'tagteam', ver: 1,
       v: (opts.v || 0) + 1, at: Date.now(), clk: opts.clk || '',
       rid: Math.random().toString(36).slice(2, 8),
@@ -33,14 +33,41 @@
       teams: teams,
       active: [teams[0][0], teams[1][0]],
       winner: null,
-      qi: 0,                     // position in bank (0-based)
-      qn: Math.max(1, bank.length),
-      q: bank[0] || '',
+      qi: 0, qn: bank.length, q: '', qc: '', qd: '', left: bank.length,
+      used: [],                  // bank indices already shown (last = current)
       mute: !!opts.mute,
       round: opts.round || 1,
       auto: opts.auto !== false,
       ev: { n: (opts.evn || 0) + 1, t: 'reset', s: null, a: null, b: null }
     };
+    if (opts.used) S.used = opts.used.slice();
+    if (!nextQ(S, bank)) { S.used = []; nextQ(S, bank); }
+    return S;
+  }
+
+  function item(x) { return typeof x === 'string' ? { q: x, a: '', c: '', d: '' } : (x || { q: '', a: '', c: '', d: '' }); }
+  function showQ(S, bank, i) {
+    var it = item(bank[i]);
+    S.qi = i; S.q = it.q; S.qc = it.c || ''; S.qd = it.d || ''; S.qn = bank.length;
+    S.left = Math.max(0, bank.length - S.used.length);
+  }
+  // pick a random question that hasn't been asked yet; false when the bank is used up
+  function nextQ(S, bank) {
+    if (!bank || !bank.length) return false;
+    if (!Array.isArray(S.used)) S.used = [];
+    var seen = {}; S.used.forEach(function (i) { seen[i] = 1; });
+    var free = []; for (var i = 0; i < bank.length; i++) if (!seen[i]) free.push(i);
+    if (!free.length) { S.left = 0; return false; }
+    var pick = free[Math.floor(Math.random() * free.length)];
+    S.used.push(pick); showQ(S, bank, pick);
+    return true;
+  }
+  // bank ran out: the round ends, the team with more time left wins (equal = draw)
+  function bankOut(S, clk) {
+    S.phase = 'over';
+    S.winner = S.times[0] > S.times[1] ? 0 : S.times[1] > S.times[0] ? 1 : null;
+    S.left = 0;
+    return bump(S, clk, { t: 'bankout', s: null, a: S.winner, b: null });
   }
 
   // remaining ms for a side, given a local time and the sender clock offset
@@ -91,8 +118,17 @@
     if (settle(S) === 'timeout') return bump(S, clk, timeoutEvent(S));
     S.turn = 1 - side;
     var moved = null;
-    if (S.auto !== false && bank && bank.length) { S.qi = (S.qi + 1) % bank.length; S.qn = bank.length; S.q = bank[S.qi]; moved = 'q'; }
+    if (S.auto !== false && bank && bank.length) { if (!nextQ(S, bank)) return bankOut(S, clk); moved = 'q'; }
     return bump(S, clk, { t: 'answer', s: side, a: S.active[side], b: moved });
+  };
+  A.skip = function (S, clk, side, bank) {
+    if (S.phase !== 'live' || S.turn !== side) return null;
+    S = clone(S);
+    if (settle(S) === 'timeout') return bump(S, clk, timeoutEvent(S));
+    S.times[side] = Math.max(0, S.times[side] - 10000);
+    if (S.times[side] <= 0) { S.phase = 'over'; S.winner = 1 - side; return bump(S, clk, { t: 'timeout', s: side, a: S.winner, b: 'skip' }); }
+    if (!nextQ(S, bank)) return bankOut(S, clk);
+    return bump(S, clk, { t: 'skip', s: side, a: S.active[side], b: null });
   };
   A.pause = function (S, clk) {
     if (S.phase !== 'live') return null;
@@ -111,33 +147,39 @@
     if (!bank || !bank.length) return null;
     S = clone(S);
     if (settle(S) === 'timeout') return bump(S, clk, timeoutEvent(S));
-    S.qi = (S.qi + 1) % bank.length;
-    S.qn = bank.length;
-    S.q = bank[S.qi];
+    if (S.phase === 'over') return null;
+    if (!nextQ(S, bank)) return S.phase === 'ready' ? null : bankOut(S, clk);
     return bump(S, clk, { t: 'next', s: null, a: S.qi, b: null });
   };
-  A.setQuestion = function (S, clk, bank, i) {
-    if (!bank || !bank.length) return null;
+  A.prevQ = function (S, clk, bank) {
+    if (!bank || !Array.isArray(S.used) || S.used.length < 2) return null;
     S = clone(S);
     if (settle(S) === 'timeout') return bump(S, clk, timeoutEvent(S));
-    S.qi = Math.max(0, Math.min(bank.length - 1, i));
-    S.qn = bank.length; S.q = bank[S.qi];
+    S.used.pop(); showQ(S, bank, S.used[S.used.length - 1]);
     return bump(S, clk, { t: 'next', s: null, a: S.qi, b: null });
   };
-  A.tag = function (S, clk, side, id) {
+  A.clearUsed = function (S, clk, bank) {
+    if (!bank || !bank.length) return null;
+    S = clone(S); S.used = []; nextQ(S, bank);
+    return bump(S, clk, { t: 'next', s: null, a: S.qi, b: null });
+  };
+  A.tag = function (S, clk, side, id, forced) {
     if (S.phase === 'over') return null;
     if (S.teams[side].indexOf(id) < 0 || S.active[side] === id) return null;
     S = clone(S);
     if (settle(S) === 'timeout') return bump(S, clk, timeoutEvent(S));
     var out = S.active[side];
     S.active[side] = id;
-    return bump(S, clk, { t: 'tag', s: side, a: id, b: out });
+    return bump(S, clk, { t: 'tag', s: side, a: id, b: out, f: forced ? 1 : 0 });
   };
   A.reset = function (S, clk, bank) {
-    var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: bank, v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute, round: S.round, auto: S.auto });
+    var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: [], v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute, round: S.round, auto: S.auto });
     N.active = S.active.slice();
-    // keep the current question position so the host doesn't lose place
-    if (bank && bank.length) { N.qi = S.qi % bank.length; N.q = bank[N.qi]; N.qn = bank.length; }
+    // continue with the questions that haven't been asked yet
+    if (bank && bank.length) {
+      N.used = Array.isArray(S.used) ? S.used.slice() : [];
+      if (!nextQ(N, bank)) { N.used = []; nextQ(N, bank); N.ev.b = 'bankreset'; }
+    }
     return N;
   };
   A.setStarter = function (S, clk, side) {
@@ -185,8 +227,8 @@
   A.setAuto = function (S, clk, on) { if ((S.auto !== false) === !!on) return null; S = clone(S); S.auto = !!on; return bump(S, clk, null); };
   A.mute = function (S, clk, m) { S = clone(S); S.mute = !!m; return bump(S, clk, null); };
   A.bank = function (S, clk, bank) {
-    S = clone(S);
-    S.qn = bank.length; S.qi = Math.min(S.qi, bank.length - 1); S.q = bank[S.qi] || '';
+    if (!bank || !bank.length) return null;
+    S = clone(S); S.used = []; nextQ(S, bank);
     return bump(S, clk, { t: 'next', s: null, a: S.qi, b: null });
   };
   // Undo: restore an earlier snapshot, but keep the clock honest:
@@ -223,6 +265,6 @@
 
   window.TT = {
     PEOPLE: PEOPLE, TEAM_NAMES: TEAM_NAMES, DUR: DUR,
-    fresh: fresh, remaining: remaining, settle: settle, actions: A, fmt: fmt, valid: valid, clone: clone
+    fresh: fresh, item: item, remaining: remaining, settle: settle, actions: A, fmt: fmt, valid: valid, clone: clone
   };
 })();

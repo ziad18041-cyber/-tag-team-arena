@@ -4,7 +4,7 @@
    Always: BroadcastChannel + localStorage for windows on the same device. */
 (function () {
   'use strict';
-  var KEY = 'tt_state_v1', BANK_KEY = 'tt_bank_v1';
+  var KEY = 'tt_state_v1', BANK_KEY = 'tt_bank_v2';
   var me = (function () {
     try { var d = sessionStorage.getItem('tt_dev'); if (!d) { d = Math.random().toString(36).slice(2, 10); sessionStorage.setItem('tt_dev', d); } return d; }
     catch (e) { return Math.random().toString(36).slice(2, 10); }
@@ -120,14 +120,14 @@
     function onConn() { setStatus({ mode: 'mqtt', connected: mq.some(function (m) { return m.ok; }) }); if (cfg.role === 'control') { heartbeat(); if (cfg.getBank) pubBank(cfg.getBank()); } }
     function onMsg(sub, obj) {
       if (sub === 'state') receive(obj, 'mqtt');
-      else if (sub === 'bank' && cfg.onBank && obj && Array.isArray(obj.list)) cfg.onBank(obj.list);
+      else if (sub === 'bank2' && cfg.onBank && obj && Array.isArray(obj.list)) cfg.onBank(obj.list);
       else if (sub === 'hello' && cfg.role === 'control') heartbeat();
     }
     mq = urls.map(function (u) { return new Mqtt(u, base, onMsg, onConn); });
     setStatus({ mode: 'mqtt' });
     if (cfg.role === 'screen') setTimeout(function () { mq.forEach(function (m) { m.pub('hello', { t: Date.now() }, false); }); }, 2500);
   }
-  function pubBank(list) { mq.forEach(function (m) { m.pub('bank', { list: list }, true); }); }
+  function pubBank(list) { mq.forEach(function (m) { m.pub('bank2', { list: list }, true); }); }
 
   /* ---------- claude.ai artifact: room + db ---------- */
   function startClaude() {
@@ -136,7 +136,7 @@
     var t = setTimeout(function () { if (!gotSnap) setStatus({ note: 'لم تصل البيانات المحفوظة بعد' }); }, 10000);
     window.claude.use('db').then(function (d) {
       if (!d) { setStatus({ note: 'قاعدة البيانات غير متاحة (سجّل الدخول)' }); return; }
-      db = d; docRef = db.doc('live/state'); bankRef = db.doc('live/bank');
+      db = d; docRef = db.doc('live/state'); bankRef = db.doc('live/bank2');
       docRef.onSnapshot(function (snap) {
         gotSnap = true; clearTimeout(t);
         if (!snap.metadata.fromCache) setStatus({ dbOk: true, note: '' });

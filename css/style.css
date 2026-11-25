@@ -136,7 +136,7 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 .title .ar{font-size:62px;font-weight:900;line-height:1.05;color:var(--yel);text-shadow:0 0 18px #ff8a00,0 3px 0 #5a2c00;direction:rtl}
 .title .rd{margin-top:4px;font-family:var(--f-num);font-style:italic;font-size:34px;letter-spacing:3px;padding:0 34px;border:2px solid #9bb6ef;background:linear-gradient(180deg,#1b3570,#0a1532);clip-path:polygon(8% 0,92% 0,100% 50%,92% 100%,8% 100%,0 50%)}
 
-.qpanel{position:absolute;left:300px;right:300px;top:770px;height:150px;display:grid;place-items:center;align-content:center;background:linear-gradient(180deg,#14306a,#081530);border:3px solid #6aa4ff;clip-path:polygon(4% 0,96% 0,100% 50%,96% 100%,4% 100%,0 50%);box-shadow:inset 0 0 50px #2f8dff55;direction:rtl;transform-origin:50% 50%}
+.qpanel{position:absolute;left:300px;right:300px;top:752px;height:168px;display:grid;place-items:center;align-content:center;background:linear-gradient(180deg,#14306a,#081530);border:3px solid #6aa4ff;clip-path:polygon(4% 0,96% 0,100% 50%,96% 100%,4% 100%,0 50%);box-shadow:inset 0 0 50px #2f8dff55;direction:rtl;transform-origin:50% 50%}
 .qpanel.flip{animation:qflip .9s ease}
 @keyframes qflip{0%{transform:rotateX(0)}45%{transform:rotateX(90deg);filter:brightness(2)}55%{transform:rotateX(-90deg);filter:brightness(2)}100%{transform:rotateX(0)}}
 .qtext{font-size:54px;font-weight:900;line-height:1.25;padding:0 90px;text-align:center;color:#fff;text-shadow:0 2px 0 #000}
@@ -328,3 +328,21 @@ textarea{width:100%;font:inherit;font-size:14px;line-height:1.6;background:#050b
 .pr button.st{opacity:.45}.pr button.st.on{opacity:1;background:#e9f0ff;color:#0b1630}
 .pr.s0{border-color:#2f8dff66}.pr.s1{border-color:#ffc92866}
 #durSeg button{direction:ltr;font-family:var(--f-num);font-size:16px}
+
+.cp-skip{min-height:52px;border-radius:12px;border:2px solid var(--c);background:color-mix(in srgb,var(--c),#0b1630 82%);font-size:16px}
+.cp-skip.b{--c:var(--blue)}.cp-skip.y{--c:var(--yel)}
+.cp-skip small{font-family:var(--f-num);color:#ff9b9b}
+.cp-skip:disabled{opacity:.25}
+.cp-qa{margin:6px 0;padding:8px 10px;border-radius:10px;background:#0f3a24;border:1px solid #2bd96b66}
+.cp-qa small{display:block;font-size:11px;color:#8fe3b0}.cp-qa b{font-size:20px;color:#bdf5d3}
+.cp-qleft{font-size:13px;color:#9fb3d8}.cp-qleft.warn{color:#ff8080}
+.cp-th{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.cp-force{font-size:13px;padding:7px 10px;border-radius:8px;border:1px solid #ff4d4d;background:#5a1010;color:#ffd0d0}
+.cp-force:disabled{opacity:.3}
+.qcat{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:22px;padding:0 22px;border-radius:0 0 10px 10px;background:#0b1a3d;border:1px solid #5b8ee6;border-top:0;color:#cfe0ff;white-space:nowrap}
+.qcat:empty{display:none}
+.qcat.d-صعب{color:#ff9b9b;border-color:#ff5b5b}.qcat.d-متوسط{color:#ffd27a;border-color:#ffb02b}.qcat.d-سهل{color:#9cf0bd;border-color:#2bd96b}
+.clock.hit{animation:hit .6s ease}
+@keyframes hit{0%,100%{transform:scale(1.06)}20%{transform:scale(1.06) translateX(-12px);box-shadow:inset 0 0 60px #ff2b2b}40%{transform:scale(1.06) translateX(10px)}60%{transform:scale(1.06) translateX(-6px)}}
+.qpanel{position:absolute}
+.qcat:not(:empty)~.qtext{margin-top:22px}

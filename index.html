@@ -77,6 +77,7 @@
         </div>
 
         <div class="qpanel" id="qpanel">
+          <div class="qcat" id="qcat"></div>
           <div class="qtext" id="qtext"></div>
           <div class="qnum" id="qnum">السؤال 01 من 50</div>
         </div>
@@ -133,6 +134,8 @@
   <div class="cp-answers">
     <button class="cp-ans b" id="ans0">✓ جاوب الأزرق</button>
     <button class="cp-ans y" id="ans1">✓ جاوب الأصفر</button>
+    <button class="cp-skip b" id="skip0">⏭ سكيب الأزرق <small>−10ث</small></button>
+    <button class="cp-skip y" id="skip1">⏭ سكيب الأصفر <small>−10ث</small></button>
   </div>
 
   <div class="cp-transport">
@@ -145,13 +148,14 @@
   <div class="cp-q">
     <div class="cp-qhead"><span id="cqn">السؤال 1 من 50</span><button class="cp-mini" id="bPrevQ">السابق</button></div>
     <div class="cp-qtext" id="cq"></div>
-    <div class="cp-qnext">التالي: <span id="cqNext"></span></div>
+    <div class="cp-qa"><small>الجواب (يظهر لك فقط)</small><b id="cqA"></b></div>
+    <div class="cp-qleft" id="cqLeft"></div>
     <button class="cp-btn next" id="bNext">⏭ السؤال التالي</button>
   </div>
 
   <div class="cp-tags">
-    <div class="cp-team b"><div class="cp-th">تبديل الأزرق — اختر الداخل</div><div class="cp-faces" id="tag0"></div></div>
-    <div class="cp-team y"><div class="cp-th">تبديل الأصفر — اختر الداخل</div><div class="cp-faces" id="tag1"></div></div>
+    <div class="cp-team b"><div class="cp-th"><span>تبديل الأزرق — اختر الداخل</span><button class="cp-force" id="force0">⚠ تبديل إجباري</button></div><div class="cp-faces" id="tag0"></div></div>
+    <div class="cp-team y"><div class="cp-th"><span>تبديل الأصفر — اختر الداخل</span><button class="cp-force" id="force1">⚠ تبديل إجباري</button></div><div class="cp-faces" id="tag1"></div></div>
   </div>
 
   <details class="cp-set" id="settings">
@@ -159,8 +163,8 @@
     <div class="cp-row"><span>تصحيح الوقت</span><div class="adj"><button data-a="0,-5000">أزرق −5</button><button data-a="0,5000">أزرق +5</button><button data-a="1,-5000">أصفر −5</button><button data-a="1,5000">أصفر +5</button></div></div>
     <div class="cp-row"><span>سؤال جديد تلقائيًا بعد كل إجابة</span><div class="seg"><button id="auto1">تشغيل</button><button id="auto0">إيقاف</button></div></div>
     <div class="cp-row"><span>صوت شاشة الجمهور</span><div class="seg"><button id="snd1">تشغيل</button><button id="snd0">كتم</button></div></div>
-    <div class="cp-row col"><span>بنك الأسئلة (سؤال في كل سطر)</span><textarea id="bankText" rows="8"></textarea>
-      <div class="adj"><button id="bankSave">حفظ البنك</button><button id="bankShuffle">خلط الترتيب</button><button id="bankDefault">الأسئلة الافتراضية</button></div><small id="bankInfo"></small></div>
+    <div class="cp-row col"><span>بنك الأسئلة — كل سطر: السؤال | الجواب | الفئة | الصعوبة</span><textarea id="bankText" rows="8"></textarea>
+      <div class="adj"><button id="bankSave">حفظ البنك</button><button id="bankShuffle">تصفير الأسئلة المستخدمة</button><button id="bankDefault">الأسئلة الافتراضية</button></div><small id="bankInfo"></small></div>
     <div class="cp-row col" id="roomRow" hidden><span>رمز الغرفة (للربط بين الأجهزة)</span><b id="roomCode" class="room-code"></b><small id="roomLinks"></small></div>
     <div class="cp-row"><button class="cp-mini" id="switchRole">تغيير دور الجهاز</button><button class="cp-mini" id="wakeBtn">إبقاء الشاشة مضاءة</button></div>
   </details>

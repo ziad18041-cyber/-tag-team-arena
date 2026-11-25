@@ -72,6 +72,8 @@
       $('cc' + k).classList.toggle('on', on); $('cc' + k).classList.toggle('crit', on && r <= 10000);
       $('cn' + k).textContent = P[S.active[k]].name;
       $('ans' + k).disabled = !(live && S.turn === k && !over);
+      $('skip' + k).disabled = !(live && S.turn === k && !over);
+      $('force' + k).disabled = over || S.teams[k].length < 2;
       $('tag' + k).querySelectorAll('.cp-face').forEach(function (b) {
         var i = +b.dataset.i; b.classList.toggle('on', S.active[k] === i); b.disabled = S.active[k] === i || over;
       });
@@ -85,11 +87,15 @@
     $('bPause').textContent = S.phase === 'paused' ? '▶ استئناف' : '⏸ إيقاف مؤقت';
     $('bUndo').disabled = !hist.length;
     var arm = Date.now() < resetArm; $('bReset').classList.toggle('arm', arm); $('bReset').textContent = arm ? 'اضغط للتأكيد' : '⟲ إعادة الراوند';
-    var b = bank || [];
-    $('cqn').textContent = 'السؤال ' + (S.qi + 1) + ' من ' + S.qn;
+    var b = bank || [], it = TT.item(b[S.qi]);
+    var used = Array.isArray(S.used) ? S.used.length : 1, left = typeof S.left === 'number' ? S.left : Math.max(0, b.length - used);
+    $('cqn').textContent = 'السؤال ' + used + ' من ' + b.length + (S.qc ? ' • ' + S.qc : '') + (S.qd ? ' • ' + S.qd : '');
     $('cq').textContent = S.q;
-    $('cqNext').textContent = b.length ? b[(S.qi + 1) % b.length] : '';
-    $('bPrevQ').disabled = S.qi <= 0;
+    $('cqA').textContent = it.q === S.q && it.a ? it.a : '—';
+    $('cqLeft').textContent = over && left === 0 ? 'انتهت الأسئلة' : left === 0 ? '⚠ هذا آخر سؤال — بعده ينتهي الراوند' : 'متبقي ' + left + ' سؤال بعد هذا';
+    $('cqLeft').classList.toggle('warn', left <= 5);
+    $('bPrevQ').disabled = used < 2 || over;
+    $('bNext').disabled = over;
     var ready = S.phase === 'ready';
     $('st0').classList.toggle('on', S.starter === 0); $('st1').classList.toggle('on', S.starter === 1);
     $('st0').disabled = $('st1').disabled = !ready;
@@ -123,16 +129,24 @@
     c.className = 'cp-conn ' + cls; c.querySelector('span').textContent = t;
   }
 
+  var upgraded = false;
   function onState(N, via) {
+    if (!upgraded && !Array.isArray(N.used) && N.phase !== 'live' && N.phase !== 'paused') {
+      upgraded = true; S = N; setTimeout(function () { act('reset', bank); }, 0); return;
+    }
     if (via === 'cache' || !S) { S = N; adopted = true; render(); return; }
     if (N.clk !== me) hist = []; // another controller acted: our undo history no longer applies
     S = N; render();
   }
 
   function setBank(list, save) {
-    list = list.map(function (s) { return String(s).trim(); }).filter(Boolean).slice(0, 500);
+    list = list.map(function (x) {
+      if (x && typeof x === 'object') return { q: String(x.q || '').trim(), a: String(x.a || '').trim(), c: String(x.c || '').trim(), d: String(x.d || '').trim() };
+      var p = String(x).split('|').map(function (t) { return t.trim(); });
+      return { q: p[0] || '', a: p[1] || '', c: p[2] || '', d: p[3] || '' };
+    }).filter(function (x) { return x.q; }).slice(0, 500);
     if (!list.length) return false;
-    bank = list; $('bankText').value = list.join('\n'); $('bankInfo').textContent = list.length + ' سؤال';
+    bank = list; $('bankText').value = list.map(function (x) { return [x.q, x.a, x.c, x.d].join(' | '); }).join('\n'); $('bankInfo').textContent = list.length + ' سؤال';
     if (save) TTSync.saveBank(list);
     return true;
   }
@@ -162,14 +176,23 @@
     $('bStart').addEventListener('click', function () { wakeLock(); if (S.v === 0) S = TT.fresh({ bank: bank, clk: me }); act('start'); });
     $('bPause').addEventListener('click', function () { act(S.phase === 'paused' ? 'resume' : 'pause'); });
     $('bNext').addEventListener('click', function () { act('next', bank); });
-    $('bPrevQ').addEventListener('click', function () { act('setQuestion', bank, S.qi - 1); });
+    $('bPrevQ').addEventListener('click', function () { act('prevQ', bank); });
+    [0, 1].forEach(function (k) {
+      $('skip' + k).addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; if (act('skip', k, bank)) toast('سكيب ' + TEAM[k] + ' — خُصمت 10 ثواني'); });
+      $('force' + k).addEventListener('click', function () {
+        var bench = S.teams[k].filter(function (i) { return i !== S.active[k]; });
+        if (!bench.length) return;
+        var pick = bench[Math.floor(Math.random() * bench.length)];
+        if (act('tag', k, pick, true)) toast('⚠ تبديل إجباري: دخل ' + P[pick].name);
+      });
+    });
     $('bUndo').addEventListener('click', function () {
       if (!hist.length) return;
       var prev = hist.pop(), N = A.undo(own(S), me, own(prev));
       if (N) { S = N; TTSync.publish(S); buzz(); toast('تم التراجع'); render(); }
     });
     $('bReset').addEventListener('click', function () {
-      if (Date.now() < resetArm) { resetArm = 0; act('reset', bank); toast('أعيد الراوند'); }
+      if (Date.now() < resetArm) { resetArm = 0; if (act('reset', bank)) toast(S.ev.b === 'bankreset' ? 'أعيد الراوند — الأسئلة خلصت فرجعت كلها من جديد' : 'أعيد الراوند بالأسئلة اللي ما انسألت (' + S.left + ')'); }
       else { resetArm = Date.now() + 3000; buzz(25); render(); setTimeout(render, 3100); }
     });
     $('st0').addEventListener('click', function () { act('setStarter', 0); });
@@ -184,18 +207,14 @@
     $('snd1').addEventListener('click', function () { act('mute', false); });
     $('snd0').addEventListener('click', function () { act('mute', true); });
     $('bankSave').addEventListener('click', function () { if (setBank($('bankText').value.split('\n'), true)) { act('bank', bank); toast('حُفظ بنك الأسئلة (' + bank.length + ')'); } else toast('البنك فارغ'); });
-    $('bankShuffle').addEventListener('click', function () {
-      var cur = S.q, b = bank.slice(); for (var i = b.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = b[i]; b[i] = b[j]; b[j] = t; }
-      var ci = b.indexOf(cur); if (ci > 0) { b.splice(ci, 1); b.unshift(cur); }
-      setBank(b, true); S = TT.clone(S); S.qi = 0; act('bank', bank); toast('تم خلط الترتيب — السؤال الحالي أولًا');
-    });
+    $('bankShuffle').addEventListener('click', function () { if (act('clearUsed', bank)) toast('رجعت كل الأسئلة متاحة من جديد'); });
     $('bankDefault').addEventListener('click', function () { setBank(window.TT_DEFAULT_QUESTIONS.slice(), true); act('bank', bank); toast('أعيدت الأسئلة الافتراضية'); });
     $('switchRole').addEventListener('click', function () { try { localStorage.removeItem('tt_role'); } catch (e) {} try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} location.reload(); });
     $('wakeBtn').addEventListener('click', function () { wakeLock(); toast(navigator.wakeLock ? 'الشاشة ستبقى مضاءة' : 'المتصفح لا يدعم إبقاء الشاشة — عطّل القفل التلقائي'); });
     document.addEventListener('visibilitychange', function () { if (!document.hidden) { wakeLock(); TTSync.heartbeat(); } });
 
     TTSync.init({ role: 'control', onState: onState, onStatus: status, getBank: function () { return bank; },
-      onBank: function (list) { if (Array.isArray(list) && list.length && JSON.stringify(list) !== JSON.stringify(bank)) { setBank(list, false); try { localStorage.setItem('tt_bank_v1', JSON.stringify(list)); } catch (e) {} render(); } } });
+      onBank: function (list) { if (Array.isArray(list) && list.length && JSON.stringify(list) !== JSON.stringify(bank)) { setBank(list, false); try { localStorage.setItem('tt_bank_v2', JSON.stringify(list)); } catch (e) {} render(); } } });
     setInterval(tick, 100);
     window.TTControl = { state: function () { return S; }, hist: function () { return hist.length; }, bank: function () { return bank; } };
   }

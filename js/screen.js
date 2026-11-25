@@ -92,7 +92,9 @@
     var q = S.q || '';
     $('qtext').textContent = q; $('qtext').classList.toggle('long', q.length > 42);
     $('roundTag').textContent = 'ROUND ' + rnd();
-    $('qnum').textContent = 'السؤال ' + String(S.qi + 1).padStart(2, '0') + ' من ' + S.qn;
+    var used = Array.isArray(S.used) ? S.used.length : S.qi + 1;
+    $('qnum').textContent = 'السؤال ' + String(used).padStart(2, '0') + ' من ' + S.qn;
+    var qc = $('qcat'); qc.textContent = S.qc ? S.qc + (S.qd ? ' • ' + S.qd : '') : ''; qc.className = 'qcat' + (S.qd ? ' d-' + S.qd : '');
     [0, 1].forEach(function (k) {
       var faces = $('roster' + k).querySelectorAll('.r-face');
       faces.forEach(function (d) { var i = +d.dataset.i; d.style.display = S.teams[k].indexOf(i) >= 0 ? '' : 'none'; d.classList.toggle('on', S.active[k] === i); });
@@ -106,6 +108,7 @@
     var c = $('chip'), w = winner(); c.classList.remove('c0', 'c1');
     if (!S) return;
     if (w != null) { c.textContent = '🏆 الفوز للفريق ' + TEAM[w]; c.classList.add('c' + w); }
+    else if (S.phase === 'over') c.textContent = 'تعادل — انتهت الأسئلة';
     else if (S.phase === 'ready') c.textContent = 'استعداد — يبدأ الفريق ' + TEAM[S.starter];
     else if (S.phase === 'paused') c.textContent = 'إيقاف مؤقت';
     else { c.textContent = 'الدور على ' + TEAM[S.turn] + ' • ' + TEAM[1 - S.turn] + ' يسيطر'; c.classList.add('c' + S.turn); }
@@ -293,6 +296,13 @@
     return 3600;
   };
   SC.tag = function (ev) {
+    if (ev.f && !ev._pre) {
+      cls('letterbox', true); flash('#ff2b2b'); sfx('buzzer'); dim(.6);
+      big('⚠ تبديل إجباري', 'الفريق ' + TEAM[ev.s], '#ff3b3b');
+      $('vig').style.opacity = .7;
+      later(1300, function () { bigHide(); $('vig').style.opacity = 0; var e2 = {}; for (var x in ev) e2[x] = ev[x]; e2._pre = 1; SC.tag(e2); });
+      return 1300 + 3700;
+    }
     var k = ev.s, inI = ev.a, outI = ev.b, p = P[inI], th = THEMES[p.theme] || THEMES.ref, col = COLORS[k];
     var hero = $('hero');
     hero.className = 'hero s' + k; hero.style.setProperty('--c', p.theme === 'ref' ? col : th.col);
@@ -371,13 +381,31 @@
     var w = $('stripes'); w.className = 'stripes'; w.style.setProperty('--wc', '#ffffff'); void w.offsetWidth; w.classList.add('wipe', 'rtl');
     sfx('rewind'); big('إعادة الراوند', '', '#7cc4ff'); later(900, bigHide); later(950, function () { cyclePoses(); shot('wide'); }); overShown = false; return 1000;
   };
+  SC.skip = function (ev) {
+    var k = ev.s, col = COLORS[k];
+    SC.next(); sfx('whoosh'); flash('#ff3b3b');
+    big('⏭ سكيب', '−10 ثواني من الفريق ' + TEAM[k], col);
+    pulse('shake', 600); shot('turnClose');
+    var c = $('clock' + k); c.classList.remove('hit'); void c.offsetWidth; c.classList.add('hit');
+    later(1100, bigHide); later(1200, cyclePoses);
+    return 1200;
+  };
+  SC.bankout = function (ev) { return SC.finish(ev.a, 'انتهت الأسئلة!', 'الفوز للفريق صاحب الوقت الأكثر'); };
   SC.roster = function (ev) { flash(COLORS[ev.s]); later(50, cyclePoses); return 0; };
-  SC.timeout = function (loser) {
+  SC.timeout = function (loser, why) {
+    return SC.finish(1 - loser, 'انتهى الوقت!', why === 'skip' ? 'السكيب أنهى وقت الفريق ' + TEAM[loser] : 'نفد وقت الفريق ' + TEAM[loser]);
+  };
+  SC.finish = function (w, title, sub) {
     if (overShown) return 0;
     overShown = true;
-    var w = 1 - loser, col = COLORS[w];
     flash('#ff2b2b'); sfx('buzzer'); cls('letterbox', true);
-    big('انتهى الوقت!', 'نفد وقت الفريق ' + TEAM[loser], '#ff3b3b');
+    big(title, sub, '#ff3b3b');
+    if (w == null) {
+      later(1900, function () { bigHide(); $('vig').style.opacity = 0; big('تعادل!', 'نفس الوقت المتبقي للفريقين', '#ffffff'); sfx('bell'); setCheer(.8, 3000); });
+      later(5500, function () { bigHide(); cls('letterbox', false); });
+      return 5500;
+    }
+    var col = COLORS[w];
     $('vig').classList.remove('beat'); $('vig').style.opacity = .8;
     shot('wide');
     later(1900, function () {
@@ -395,7 +423,8 @@
 
   function play(ev) {
     if (!ev || !ev.t) return;
-    if (ev.t === 'timeout') { if (!overShown) { cancel(); sceneBusy = Date.now() + SC.timeout(ev.s); } return; }
+    if (ev.t === 'timeout') { if (!overShown) { cancel(); sceneBusy = Date.now() + SC.timeout(ev.s, ev.b); } return; }
+    if (ev.t === 'bankout') { if (!overShown) { cancel(); sceneBusy = Date.now() + SC.bankout(ev); } return; }
     if (ev.t === 'next') { SC.next(); return; } // overlay-free, doesn't interrupt others
     if (ev.t === 'pause') { SC.pause(); return; }
     var f = SC[ev.t]; if (!f) return;
