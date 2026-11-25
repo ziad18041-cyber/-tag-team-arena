@@ -95,6 +95,7 @@
     var used = Array.isArray(S.used) ? S.used.length : S.qi + 1;
     $('qnum').textContent = 'السؤال ' + String(used).padStart(2, '0') + ' من ' + S.qn;
     var qc = $('qcat'); qc.textContent = S.qc ? S.qc + (S.qd ? ' • ' + S.qd : '') : ''; qc.className = 'qcat' + (S.qd ? ' d-' + S.qd : '');
+    renderImage();
     [0, 1].forEach(function (k) {
       var faces = $('roster' + k).querySelectorAll('.r-face');
       faces.forEach(function (d) { var i = +d.dataset.i; d.style.display = S.teams[k].indexOf(i) >= 0 ? '' : 'none'; d.classList.toggle('on', S.active[k] === i); });
@@ -422,6 +423,40 @@
     return 6500;
   };
 
+  /* ---------- ROUND 02: image questions — the picture only; answer appears only when the host reveals it ---------- */
+  var preloaded = false;
+  function imgItem() {
+    var exs = window.TT_IMAGE_EXAMPLES || [], bank = window.TT_IMAGE_QUESTIONS || [];
+    if (S.ex !== null && S.ex !== undefined && exs[S.ex]) return { it: exs[S.ex], ex: true };
+    var it = bank[S.qi];
+    return { it: it && it.img === S.qimg ? it : (S.qimg ? { img: S.qimg, a: '' } : null), ex: false };
+  }
+  function renderImage() {
+    var on = (S.round || 1) === 2;
+    $('stage').classList.toggle('imground', on);
+    if (!on) return;
+    var r = imgItem(), it = r.it, el = $('qimgEl');
+    $('qcat').textContent = ''; $('qcat').className = 'qcat';
+    $('qtext').textContent = '';
+    var used = Array.isArray(S.used) ? S.used.length : S.qi + 1;
+    $('qnum').textContent = r.ex ? 'مثال للشرح — لا يُحسب' : 'الصورة ' + String(used).padStart(2, '0') + ' من ' + S.qn;
+    $('qimgEx').hidden = !r.ex;
+    var src = it ? it.img : '';
+    if (el.dataset.src !== src) {
+      el.dataset.src = src; el.dataset.tried = '';
+      el.onerror = function () { if (it && it.orig && !el.dataset.tried) { el.dataset.tried = 1; el.src = it.orig; } };
+      el.src = src || '';
+      var q = $('qimg'); q.classList.remove('pop'); void q.offsetWidth; q.classList.add('pop');
+    }
+    $('qimgAns').hidden = !(S.rev && it && it.a);
+    $('qimgAns').textContent = it && it.a ? it.a : '';
+    if (!preloaded) {
+      preloaded = true;
+      var list = (window.TT_IMAGE_QUESTIONS || []).concat(window.TT_IMAGE_EXAMPLES || []), k = 0;
+      (function nx() { if (k >= list.length) return; var im = new Image(); im.onload = im.onerror = function () { setTimeout(nx, 30); }; im.src = list[k++].img; })();
+    }
+  }
+
   function play(ev) {
     if (!ev || !ev.t) return;
     if (S && S.mode && S.mode !== 'quiz') return;
@@ -429,6 +464,7 @@
     if (ev.t === 'bankout') { if (!overShown) { cancel(); sceneBusy = Date.now() + SC.bankout(ev); } return; }
     if (ev.t === 'next') { SC.next(); return; } // overlay-free, doesn't interrupt others
     if (ev.t === 'pause') { SC.pause(); return; }
+    if (ev.t === 'reveal') { if (ev.a) sfx('bell'); return; }
     var f = SC[ev.t]; if (!f) return;
     cancel();
     sceneBusy = Date.now() + (f(ev) || 0);

@@ -446,3 +446,28 @@ textarea{width:100%;font:inherit;font-size:14px;line-height:1.6;background:#050b
 
 .cpm-fs{width:100%;font-size:18px;min-height:52px;background:#1d2a4a;border-color:#5b8cff}
 .cpm-fs.on{background:#5b8cff;color:#000;font-weight:800}
+
+/* ---------- ROUND 02 — image questions ---------- */
+.qimg{display:none}
+.imground .qimg{display:block;position:absolute;left:450px;right:450px;top:222px;height:612px;z-index:3;border:4px solid #ffc928;border-radius:18px;background:radial-gradient(#0d1b3d,#050a18);box-shadow:0 0 0 6px #0008,0 0 60px #ffc92866,0 20px 60px #000c;overflow:hidden}
+.qimg-in{position:absolute;inset:14px;display:grid;place-items:center}
+.qimg-in img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px;filter:drop-shadow(0 6px 18px #000a)}
+.qimg-in img:not([src]),.qimg-in img[src=""]{display:none}
+.qimg.pop{animation:qimgpop .55s cubic-bezier(.2,1.4,.4,1)}
+@keyframes qimgpop{0%{transform:scale(.86);opacity:0}100%{transform:none;opacity:1}}
+.qimg-ex{position:absolute;top:12px;right:12px;font-size:30px;font-weight:900;padding:4px 18px;border-radius:10px;background:#ffc928;color:#111}
+.qimg-ans{position:absolute;left:0;right:0;bottom:0;padding:14px 20px;text-align:center;font-size:52px;font-weight:900;color:#fff;background:linear-gradient(#0f7a3d00,#0f7a3dee 35%);text-shadow:0 2px 0 #000;animation:qimgans .45s ease}
+@keyframes qimgans{0%{transform:translateY(100%)}100%{transform:none}}
+.imground .qpanel{top:846px;height:74px;clip-path:polygon(3% 0,97% 0,100% 50%,97% 100%,3% 100%,0 50%)}
+.imground .qtext,.imground .qcat{display:none}
+.imground .qnum{position:static;transform:none;font-size:30px;background:none;border:0;color:#fff}
+.imground .vs,.imground #vs{opacity:0}
+/* phone */
+.cp-qimg{position:relative;margin:6px 0;border-radius:12px;overflow:hidden;background:#050a18;border:2px solid #ffc928;display:grid;place-items:center;min-height:120px}
+.cp-qimg img{max-width:100%;max-height:220px;object-fit:contain;display:block}
+.cp-extag{position:absolute;top:6px;right:6px;background:#ffc928;color:#111;font-weight:900;padding:2px 10px;border-radius:8px;font-size:14px}
+.cp-btn.reveal{width:100%;margin-top:8px;background:#123a26;border-color:#2bd96b}
+.cp-btn.reveal.on{background:#2bd96b;color:#000;font-weight:900}
+.cp-exrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:14px}
+.cp-exrow button{padding:8px 12px;border-radius:10px;border:1px solid #ffc92888;background:#2a2105;color:#ffe9a8;font-size:15px}
+.cp-exrow button.on{background:#ffc928;color:#111;font-weight:900}

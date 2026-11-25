@@ -49,7 +49,8 @@
   function item(x) { return typeof x === 'string' ? { q: x, a: '', c: '', d: '' } : (x || { q: '', a: '', c: '', d: '' }); }
   function showQ(S, bank, i) {
     var it = item(bank[i]);
-    S.qi = i; S.q = it.q; S.qc = it.c || ''; S.qd = it.d || ''; S.qn = bank.length;
+    S.qi = i; S.q = it.q || ''; S.qc = it.c || ''; S.qd = it.d || ''; S.qn = bank.length;
+    S.qimg = it.img || ''; S.rev = false;   // image round: the picture path only (answer stays on the host's phone)
     S.left = Math.max(0, bank.length - S.used.length);
   }
   // pick a random question that hasn't been asked yet; false when the bank is used up
@@ -105,11 +106,15 @@
 
   function timeoutEvent(S) { return { t: 'timeout', s: S.turn, a: S.winner, b: null }; }
 
+  // ROUND 02 is the image round; every other round uses the text bank
+  function kind(r) { return r === 2 ? 'img' : 'txt'; }
+  var IMG_DUR = 300000;
+
   var A = {};
   A.start = function (S, clk) {
     if (S.phase !== 'ready') return null;
     S = clone(S);
-    S.phase = 'live'; S.turn = S.starter; S.stamp = Date.now();
+    S.phase = 'live'; S.turn = S.starter; S.stamp = Date.now(); S.ex = null; S.rev = false;
     S.times = [S.dur, S.dur];
     return bump(S, clk, { t: 'intro', s: S.turn, a: null, b: null });
   };
@@ -176,6 +181,7 @@
   A.reset = function (S, clk, bank) {
     var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: [], v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute, round: S.round, auto: S.auto, mode: S.mode || 'quiz' });
     if (S.mv) N.mv = clone(S.mv);
+    if (S.usedBy) N.usedBy = clone(S.usedBy); if (S.durBy) N.durBy = clone(S.durBy);
     N.active = S.active.slice();
     // continue with the questions that haven't been asked yet
     if (bank && bank.length) {
@@ -221,10 +227,34 @@
     S = clone(S); S.active[side] = id;
     return bump(S, clk, { t: 'roster', s: side, a: id, b: null });
   };
-  A.setRound = function (S, clk, n) {
+  A.setRound = function (S, clk, n, bank) {
     if (S.phase !== 'ready' || n < 1 || n > 9 || n === S.round) return null;
-    S = clone(S); S.round = n;
+    S = clone(S);
+    var ko = kind(S.round || 1), kn = kind(n);
+    S.round = n; S.ex = null;
+    if (ko !== kn && bank && bank.length) {
+      S.usedBy = S.usedBy || {}; S.durBy = S.durBy || {};
+      var u = Array.isArray(S.used) ? S.used.slice() : [];
+      u.pop();                                   // the question on display was never asked (round not started)
+      S.usedBy[ko] = u; S.durBy[ko] = S.dur;
+      S.used = (S.usedBy[kn] || []).slice();     // continue with what this bank hasn't asked yet
+      S.dur = S.durBy[kn] || (kn === 'img' ? IMG_DUR : DUR); S.times = [S.dur, S.dur];
+      if (!nextQ(S, bank)) { S.used = []; nextQ(S, bank); }
+    }
     return bump(S, clk, { t: 'roster', s: null, a: null, b: null });
+  };
+  // show / hide the answer on the audience screen (host decides)
+  A.reveal = function (S, clk, on) {
+    on = on === undefined ? !S.rev : !!on;
+    if (!!S.rev === on) return null;
+    S = clone(S); S.rev = on;
+    return bump(S, clk, { t: 'reveal', s: null, a: on ? 1 : 0, b: null });
+  };
+  // explanation examples before the image round starts (not part of the challenge or the clock)
+  A.example = function (S, clk, i) {
+    if (S.phase !== 'ready') return null;
+    S = clone(S); S.ex = (i === null || i === undefined || i < 0) ? null : i; S.rev = false;
+    return bump(S, clk, { t: 'next', s: null, a: null, b: null });
   };
   A.setAuto = function (S, clk, on) { if ((S.auto !== false) === !!on) return null; S = clone(S); S.auto = !!on; return bump(S, clk, null); };
   // ---- top-level mode: menu | quiz | moves ----

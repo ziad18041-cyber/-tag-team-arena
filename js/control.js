@@ -17,6 +17,8 @@
     return N;
   }
 
+  // ROUND 02 = image bank (round2/), other rounds = text bank
+  function qb(r) { r = r || (S && S.round) || 1; return r === 2 ? (window.TT_IMAGE_QUESTIONS || []) : bank; }
   function act(name) {
     var args = Array.prototype.slice.call(arguments, 1);
     var base = own(S);
@@ -88,11 +90,25 @@
     $('bPause').textContent = S.phase === 'paused' ? '▶ استئناف' : '⏸ إيقاف مؤقت';
     $('bUndo').disabled = !hist.length;
     var arm = Date.now() < resetArm; $('bReset').classList.toggle('arm', arm); $('bReset').textContent = arm ? 'اضغط للتأكيد' : '⟲ إعادة الراوند';
-    var b = bank || [], it = TT.item(b[S.qi]);
+    var b = qb() || [], it = TT.item(b[S.qi]), isImg = (S.round || 1) === 2;
+    var exs = window.TT_IMAGE_EXAMPLES || [], exOn = isImg && S.ex !== null && S.ex !== undefined && exs[S.ex];
+    if (exOn) it = exs[S.ex];
     var used = Array.isArray(S.used) ? S.used.length : 1, left = typeof S.left === 'number' ? S.left : Math.max(0, b.length - used);
     $('cqn').textContent = 'السؤال ' + used + ' من ' + b.length + (S.qc ? ' • ' + S.qc : '') + (S.qd ? ' • ' + S.qd : '');
-    $('cq').textContent = S.q;
-    $('cqA').textContent = it.q === S.q && it.a ? it.a : '—';
+    $('cq').textContent = isImg ? '' : S.q;
+    var ok = isImg ? (exOn || it.img === S.qimg) : it.q === S.q;
+    $('cqA').textContent = ok && it.a ? it.a + (it.en && it.en !== it.a ? '  (' + it.en + ')' : '') : '—';
+    $('cqImgBox').hidden = !isImg;
+    if (isImg) {
+      var th = ok ? (it.th || it.img) : '';
+      if ($('cqImg').dataset.src !== th) { $('cqImg').dataset.src = th; $('cqImg').src = th; }
+      $('cqExTag').hidden = !exOn;
+      $('cqn').textContent = exOn ? 'مثال للشرح ' + (S.ex + 1) + ' من ' + exs.length + ' — لا يُحسب' : $('cqn').textContent;
+    }
+    $('bReveal').textContent = S.rev ? '🙈 إخفاء الإجابة من الشاشة' : '📺 اكشف الإجابة على الشاشة';
+    $('bReveal').classList.toggle('on', !!S.rev);
+    $('exRow').hidden = !isImg || S.phase !== 'ready';
+    $('exRow').querySelectorAll('button[data-ex]').forEach(function (bt) { bt.classList.toggle('on', String(S.ex) === bt.dataset.ex); });
     $('cqLeft').textContent = over && left === 0 ? 'انتهت الأسئلة' : left === 0 ? '⚠ هذا آخر سؤال — بعده ينتهي الراوند' : 'متبقي ' + left + ' سؤال بعد هذا';
     $('cqLeft').classList.toggle('warn', left <= 5);
     $('bPrevQ').disabled = used < 2 || over;
@@ -136,7 +152,7 @@
   var upgraded = false;
   function onState(N, via) {
     if (!upgraded && !Array.isArray(N.used) && N.phase !== 'live' && N.phase !== 'paused') {
-      upgraded = true; S = N; setTimeout(function () { act('reset', bank); }, 0); return;
+      upgraded = true; S = N; setTimeout(function () { act('reset', qb()); }, 0); return;
     }
     if (via === 'cache' || !S) { S = N; adopted = true; render(); return; }
     if (N.clk !== me) hist = []; // another controller acted: our undo history no longer applies
@@ -175,22 +191,24 @@
     S = TT.fresh({ bank: bank, clk: me }); S.v = 0;
     buildFaces(); render();
 
-    $('ans0').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 0, bank); });
-    $('ans1').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 1, bank); });
+    $('ans0').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 0, qb()); });
+    $('ans1').addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; act('answer', 1, qb()); });
     $('bStart').addEventListener('click', function () {
       wakeLock();
       var over = S.phase === 'over' || (S.phase === 'live' && rem(S.turn) <= 0);
       if (S.phase === 'paused') { act('resume'); return; }
-      if (over) { if (act('reset', bank)) toast('راوند جديد — اضغط «بدء الراوند» لما تكون جاهز'); return; }
+      if (over) { if (act('reset', qb())) toast('راوند جديد — اضغط «بدء الراوند» لما تكون جاهز'); return; }
       if (S.v === 0) S = TT.fresh({ bank: bank, clk: me });
       if (S.mode && S.mode !== 'quiz') act('setMode', 'quiz');
       act('start');
     });
     $('bPause').addEventListener('click', function () { act(S.phase === 'paused' ? 'resume' : 'pause'); });
-    $('bNext').addEventListener('click', function () { act('next', bank); });
-    $('bPrevQ').addEventListener('click', function () { act('prevQ', bank); });
+    $('bReveal').addEventListener('click', function () { act('reveal'); });
+    $('exRow').querySelectorAll('button[data-ex]').forEach(function (bt) { bt.addEventListener('click', function () { var i = +bt.dataset.ex; act('example', i < 0 || S.ex === i ? null : i); }); });
+    $('bNext').addEventListener('click', function () { act('next', qb()); });
+    $('bPrevQ').addEventListener('click', function () { act('prevQ', qb()); });
     [0, 1].forEach(function (k) {
-      $('skip' + k).addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; if (act('skip', k, bank)) toast('سكيب ' + TEAM[k] + ' — خُصمت 10 ثواني'); });
+      $('skip' + k).addEventListener('click', function () { var n = Date.now(); if (n - lastAnswerTap < 350) return; lastAnswerTap = n; if (act('skip', k, qb())) toast('سكيب ' + TEAM[k] + ' — خُصمت 10 ثواني'); });
       $('force' + k).addEventListener('click', function () {
         var bench = S.teams[k].filter(function (i) { return i !== S.active[k]; });
         if (!bench.length) return;
@@ -204,7 +222,7 @@
       if (N) { S = N; TTSync.publish(S); buzz(); toast('تم التراجع'); render(); }
     });
     $('bReset').addEventListener('click', function () {
-      if (Date.now() < resetArm) { resetArm = 0; if (act('reset', bank)) toast(S.ev.b === 'bankreset' ? 'أعيد الراوند — الأسئلة خلصت فرجعت كلها من جديد' : 'أعيد الراوند بالأسئلة اللي ما انسألت (' + S.left + ')'); }
+      if (Date.now() < resetArm) { resetArm = 0; if (act('reset', qb())) toast(S.ev.b === 'bankreset' ? 'أعيد الراوند — الأسئلة خلصت فرجعت كلها من جديد' : 'أعيد الراوند بالأسئلة اللي ما انسألت (' + S.left + ')'); }
       else { resetArm = Date.now() + 3000; buzz(25); render(); setTimeout(render, 3100); }
     });
     $('st0').addEventListener('click', function () { act('setStarter', 0); });
@@ -212,15 +230,15 @@
     $('durSeg').querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { act('setDur', +b.dataset.d); }); });
     $('durMinus').addEventListener('click', function () { act('setDur', S.dur - 30000); });
     $('durPlus').addEventListener('click', function () { act('setDur', S.dur + 30000); });
-    $('roundSeg').querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { act('setRound', +b.dataset.r); }); });
+    $('roundSeg').querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { var r = +b.dataset.r; if (act('setRound', r, qb(r))) toast(r === 2 ? 'ROUND 02 — تحدي الصور (' + qb(2).length + ' صورة • 5 دقائق)' : 'ROUND 0' + r + ' — أسئلة'); }); });
     document.querySelectorAll('[data-a]').forEach(function (b) { b.addEventListener('click', function () { var a = b.dataset.a.split(','); if (act('adjust', +a[0], +a[1])) toast('تم تعديل الوقت'); }); });
     $('auto1').addEventListener('click', function () { act('setAuto', true); });
     $('auto0').addEventListener('click', function () { act('setAuto', false); });
     $('snd1').addEventListener('click', function () { act('mute', false); });
     $('snd0').addEventListener('click', function () { act('mute', true); });
-    $('bankSave').addEventListener('click', function () { if (setBank($('bankText').value.split('\n'), true)) { act('bank', bank); toast('حُفظ بنك الأسئلة (' + bank.length + ')'); } else toast('البنك فارغ'); });
-    $('bankShuffle').addEventListener('click', function () { if (act('clearUsed', bank)) toast('رجعت كل الأسئلة متاحة من جديد'); });
-    $('bankDefault').addEventListener('click', function () { setBank(window.TT_DEFAULT_QUESTIONS.slice(), true); act('bank', bank); toast('أعيدت الأسئلة الافتراضية'); });
+    $('bankSave').addEventListener('click', function () { if (setBank($('bankText').value.split('\n'), true)) { if ((S.round || 1) !== 2) act('bank', bank); toast('حُفظ بنك الأسئلة (' + bank.length + ')'); } else toast('البنك فارغ'); });
+    $('bankShuffle').addEventListener('click', function () { if (act('clearUsed', qb())) toast('رجعت كل الأسئلة متاحة من جديد'); });
+    $('bankDefault').addEventListener('click', function () { setBank(window.TT_DEFAULT_QUESTIONS.slice(), true); if ((S.round || 1) !== 2) act('bank', bank); toast('أعيدت الأسئلة الافتراضية'); });
     
     $('scrLinkCopy').addEventListener('click', function () {
       var u = $('scrLinkUrl').textContent;

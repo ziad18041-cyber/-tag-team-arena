@@ -1,0 +1,84 @@
+R02-001 | flags/easy/flags_01.png | السعودية
+R02-002 | flags/easy/flags_02.png | اليابان
+R02-003 | flags/easy/flags_03.png | البرازيل
+R02-004 | flags/easy/flags_04.png | ألمانيا
+R02-005 | flags/easy/flags_05.png | الأرجنتين
+R02-006 | flags/easy/flags_06.png | كندا
+R02-007 | flags/medium/flags_07.png | البرتغال
+R02-008 | flags/medium/flags_08.png | المكسيك
+R02-009 | flags/medium/flags_09.png | كرواتيا
+R02-010 | flags/medium/flags_10.png | أوروغواي
+R02-011 | flags/medium/flags_11.png | جنوب أفريقيا
+R02-012 | flags/medium/flags_12.png | كوريا الجنوبية
+R02-013 | flags/hard/flags_13.png | بوتان
+R02-014 | flags/hard/flags_14.png | بليز
+R02-015 | flags/hard/flags_15.png | فانواتو
+R02-016 | flags/hard/flags_16.png | كيريباتي
+R02-017 | flags/hard/flags_17.png | ليسوتو
+R02-018 | flags/hard/flags_18.png | دومينيكا
+R02-019 | Examples/flags_example.png | فرنسا | مثال
+R02-020 | maps/easy/maps_01.png | السعودية
+R02-021 | maps/easy/maps_02.png | إيطاليا
+R02-022 | maps/easy/maps_03.png | مصر
+R02-023 | maps/easy/maps_04.png | الهند
+R02-024 | maps/easy/maps_05.png | أستراليا
+R02-025 | maps/easy/maps_06.png | تركيا
+R02-026 | maps/medium/maps_07.png | الأرجنتين
+R02-027 | maps/medium/maps_08.png | تشيلي
+R02-028 | maps/medium/maps_09.png | النرويج
+R02-029 | maps/medium/maps_10.png | فيتنام
+R02-030 | maps/medium/maps_11.png | كازاخستان
+R02-031 | maps/medium/maps_12.png | مدغشقر
+R02-032 | maps/hard/maps_13.png | قيرغيزستان
+R02-033 | maps/hard/maps_14.png | طاجيكستان
+R02-034 | maps/hard/maps_15.png | سورينام
+R02-035 | maps/hard/maps_16.png | بنين
+R02-036 | maps/hard/maps_17.png | مولدوفا
+R02-037 | maps/hard/maps_18.png | إريتريا
+R02-038 | Examples/maps_example.png | إسبانيا | مثال
+R02-039 | seas/mixed/seas_01.png | البحر الأحمر
+R02-040 | seas/mixed/seas_02.png | البحر الأسود
+R02-041 | seas/mixed/seas_03.png | بحر العرب
+R02-042 | seas/mixed/seas_04.png | بحر البلطيق
+R02-043 | seas/mixed/seas_05.png | بحر تسمان
+R02-044 | Examples/seas_example.png | خليج المكسيك | مثال
+R02-045 | players/players_01.jpg | أندريا بيرلو | Andrea Pirlo
+R02-046 | players/players_02.jpg | أندريس داليساندرو | Andres D’Alessandro
+R02-047 | players/players_03.jpg | أندريس إنييستا | Andres Iniesta
+R02-048 | players/players_04.jpg | أنطوان غريزمان | Antoine Griezmann
+R02-049 | players/players_05.jpg | كريستيانو رونالدو | Cristiano Ronaldo
+R02-050 | players/players_06.jpg | دافيد فيا | David Villa
+R02-051 | players/players_07.jpg | دييغو فورلان | Diego Forlan
+R02-052 | players/players_08.jpg | دييغو ميليتو | Diego Milito
+R02-053 | players/players_09.jpg | دييغو تريستان | Diego Tristan
+R02-054 | players/players_10.jpg | يان كولر | Jan Koller
+R02-055 | players/players_11.jpg | خافيير سافيولا | Javier Saviola
+R02-056 | players/players_12.jpg | خوان رومان ريكيلمي | Juan Roman Riquelme
+R02-057 | players/players_13.jpg | خوليو بابتيستا | Julio Baptista
+R02-058 | players/players_14.jpg | ليونيل ميسي | Lionel Messi
+R02-059 | players/players_15.jpg | لوكا مودريتش | Luka Modric
+R02-060 | players/players_16.jpg | محمد صلاح | Mohamed Salah
+R02-061 | players/players_17.jpg | نيمار | Neymar Jr
+R02-062 | players/players_18.jpg | بابلو أيمار | Pablo Aimar
+R02-063 | players/players_19.jpg | ريكاردو كواريزما | Ricardo Quaresma
+R02-064 | players/players_20.jpg | روي ماكاي | Roy Makaay
+R02-065 | characters/characters_01.jpg | هيول بابينو | Huell Babineaux — Breaking Bad
+R02-066 | characters/characters_02.jpg | جاك سبارو | Jack Sparrow
+R02-067 | characters/characters_03.jpg | مستر بين | Mr. Bean
+R02-068 | characters/characters_04.jpg | سول غودمان | Saul Goodman — Better Call Saul
+R02-069 | characters/characters_05.png | المتشرد (تشارلي تشابلن) | The Tramp — Charlie Chaplin
+R02-070 | characters/characters_06.jpg | شيرلوك هولمز | Sherlock Holmes
+R02-071 | characters/characters_07.jpg | دراكولا | Dracula — Bela Lugosi
+R02-072 | characters/characters_08.jpg | وحش فرانكنشتاين | Frankenstein’s Monster
+R02-073 | characters/characters_09.jpg | جيمس بوند | James Bond
+R02-074 | characters/characters_10.jpg | إنديانا جونز | Indiana Jones
+R02-075 | characters/characters_11.jpg | روكي بالبوا | Rocky Balboa
+R02-076 | characters/characters_12.jpg | فورست غامب | Forrest Gump
+R02-077 | characters/characters_13.jpg | الجوكر | The Joker
+R02-078 | characters/characters_14.jpg | باتمان | Batman
+R02-079 | characters/characters_15.jpg | وندر وومان | Wonder Woman
+R02-080 | characters/characters_16.jpg | وينزداي آدامز | Wednesday Addams
+R02-081 | characters/characters_17.jpg | الدكتور | The Doctor
+R02-082 | characters/characters_18.png | دون فيتو كورليوني | Don Vito Corleone — The Godfather
+R02-083 | characters/characters_19.jpg | بوباي | Popeye
+R02-084 | characters/characters_20.png | بيتي بوب | Betty Boop

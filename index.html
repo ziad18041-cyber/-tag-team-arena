@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache">
-<script>window.TT_BUILD='b11250539';
+<script>window.TT_BUILD='b11250600';
 /* stale-page guard: if the server has a newer build than this cached page, reload once with a fresh URL */
 (function(){try{if(!/^https?:/.test(location.protocol)||window.claude)return;fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(v){v=(v||'').trim();if(v&&v!==window.TT_BUILD&&sessionStorage.getItem('tt_rl')!==v){sessionStorage.setItem('tt_rl',v);var u=new URL(location.href);u.searchParams.set('b',v);location.replace(u.toString())}}).catch(function(){})}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -11,7 +11,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>TAG TEAM | الاستنزاف — ROUND 01</title>
-<link rel="stylesheet" href="css/style.css?v=1795574387">
+<link rel="stylesheet" href="css/style.css?v=1795575630">
 </head>
 <body>
 
@@ -80,6 +80,7 @@
           <div class="clk-turn">على الساعة</div>
         </div>
 
+        <div class="qimg" id="qimg"><div class="qimg-in"><img id="qimgEl" alt=""></div><div class="qimg-ex" id="qimgEx" hidden>مثال للشرح</div><div class="qimg-ans" id="qimgAns" hidden></div></div>
         <div class="qpanel" id="qpanel">
           <div class="qcat" id="qcat"></div>
           <div class="qtext" id="qtext"></div>
@@ -244,7 +245,10 @@
   <div class="cp-q">
     <div class="cp-qhead"><span id="cqn">السؤال 1 من 50</span><button class="cp-mini" id="bPrevQ">السابق</button></div>
     <div class="cp-qtext" id="cq"></div>
+    <div class="cp-qimg" id="cqImgBox" hidden><img id="cqImg" alt=""><span class="cp-extag" id="cqExTag" hidden>مثال</span></div>
     <div class="cp-qa"><small>الجواب (يظهر لك فقط)</small><b id="cqA"></b></div>
+    <button class="cp-btn reveal" id="bReveal" type="button">📺 اكشف الإجابة على الشاشة</button>
+    <div class="cp-exrow" id="exRow" hidden><span>أمثلة الشرح (قبل البدء):</span><button data-ex="0" type="button">مثال 1</button><button data-ex="1" type="button">مثال 2</button><button data-ex="2" type="button">مثال 3</button><button data-ex="-1" type="button">إخفاء</button></div>
     <div class="cp-qleft" id="cqLeft"></div>
     <button class="cp-btn next" id="bNext">⏭ السؤال التالي</button>
   </div>
@@ -268,15 +272,16 @@
   <div class="cp-toast" id="toast"></div>
 </section>
 
-<script src="js/questions.js?v=1795574387"></script>
-<script src="js/logic.js?v=1795574387"></script>
-<script src="js/sync.js?v=1795574387"></script>
-<script src="js/sfx.js?v=1795574387"></script>
-<script src="js/moves-data.js?v=1795574387"></script>
-<script src="js/screen.js?v=1795574387"></script>
-<script src="js/moves.js?v=1795574387"></script>
-<script src="js/control.js?v=1795574387"></script>
-<script src="js/control-moves.js?v=1795574387"></script>
-<script src="js/main.js?v=1795574387"></script>
+<script src="js/round2-data.js?v=1795575630"></script>
+<script src="js/questions.js?v=1795575630"></script>
+<script src="js/logic.js?v=1795575630"></script>
+<script src="js/sync.js?v=1795575630"></script>
+<script src="js/sfx.js?v=1795575630"></script>
+<script src="js/moves-data.js?v=1795575630"></script>
+<script src="js/screen.js?v=1795575630"></script>
+<script src="js/moves.js?v=1795575630"></script>
+<script src="js/control.js?v=1795575630"></script>
+<script src="js/control-moves.js?v=1795575630"></script>
+<script src="js/main.js?v=1795575630"></script>
 </body>
 </html>

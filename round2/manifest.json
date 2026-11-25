@@ -1,0 +1,838 @@
+[
+  {
+    "image": "flags/easy/flags_01.png",
+    "answer": "السعودية",
+    "category": "flags",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-001"
+  },
+  {
+    "image": "flags/easy/flags_02.png",
+    "answer": "اليابان",
+    "category": "flags",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-002"
+  },
+  {
+    "image": "flags/easy/flags_03.png",
+    "answer": "البرازيل",
+    "category": "flags",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-003"
+  },
+  {
+    "image": "flags/easy/flags_04.png",
+    "answer": "ألمانيا",
+    "category": "flags",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-004"
+  },
+  {
+    "image": "flags/easy/flags_05.png",
+    "answer": "الأرجنتين",
+    "category": "flags",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-005"
+  },
+  {
+    "image": "flags/easy/flags_06.png",
+    "answer": "كندا",
+    "category": "flags",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-006"
+  },
+  {
+    "image": "flags/medium/flags_07.png",
+    "answer": "البرتغال",
+    "category": "flags",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-007"
+  },
+  {
+    "image": "flags/medium/flags_08.png",
+    "answer": "المكسيك",
+    "category": "flags",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-008"
+  },
+  {
+    "image": "flags/medium/flags_09.png",
+    "answer": "كرواتيا",
+    "category": "flags",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-009"
+  },
+  {
+    "image": "flags/medium/flags_10.png",
+    "answer": "أوروغواي",
+    "category": "flags",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-010"
+  },
+  {
+    "image": "flags/medium/flags_11.png",
+    "answer": "جنوب أفريقيا",
+    "category": "flags",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-011"
+  },
+  {
+    "image": "flags/medium/flags_12.png",
+    "answer": "كوريا الجنوبية",
+    "category": "flags",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-012"
+  },
+  {
+    "image": "flags/hard/flags_13.png",
+    "answer": "بوتان",
+    "category": "flags",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-013"
+  },
+  {
+    "image": "flags/hard/flags_14.png",
+    "answer": "بليز",
+    "category": "flags",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-014"
+  },
+  {
+    "image": "flags/hard/flags_15.png",
+    "answer": "فانواتو",
+    "category": "flags",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-015"
+  },
+  {
+    "image": "flags/hard/flags_16.png",
+    "answer": "كيريباتي",
+    "category": "flags",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-016"
+  },
+  {
+    "image": "flags/hard/flags_17.png",
+    "answer": "ليسوتو",
+    "category": "flags",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-017"
+  },
+  {
+    "image": "flags/hard/flags_18.png",
+    "answer": "دومينيكا",
+    "category": "flags",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-018"
+  },
+  {
+    "image": "Examples/flags_example.png",
+    "answer": "فرنسا",
+    "category": "flags",
+    "difficulty": "example",
+    "example": true,
+    "source": "Noto Color Emoji flag artwork",
+    "id": "R02-019"
+  },
+  {
+    "image": "maps/easy/maps_01.png",
+    "answer": "السعودية",
+    "category": "maps",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-020"
+  },
+  {
+    "image": "maps/easy/maps_02.png",
+    "answer": "إيطاليا",
+    "category": "maps",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-021"
+  },
+  {
+    "image": "maps/easy/maps_03.png",
+    "answer": "مصر",
+    "category": "maps",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-022"
+  },
+  {
+    "image": "maps/easy/maps_04.png",
+    "answer": "الهند",
+    "category": "maps",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-023"
+  },
+  {
+    "image": "maps/easy/maps_05.png",
+    "answer": "أستراليا",
+    "category": "maps",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-024"
+  },
+  {
+    "image": "maps/easy/maps_06.png",
+    "answer": "تركيا",
+    "category": "maps",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-025"
+  },
+  {
+    "image": "maps/medium/maps_07.png",
+    "answer": "الأرجنتين",
+    "category": "maps",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-026"
+  },
+  {
+    "image": "maps/medium/maps_08.png",
+    "answer": "تشيلي",
+    "category": "maps",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-027"
+  },
+  {
+    "image": "maps/medium/maps_09.png",
+    "answer": "النرويج",
+    "category": "maps",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-028"
+  },
+  {
+    "image": "maps/medium/maps_10.png",
+    "answer": "فيتنام",
+    "category": "maps",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-029"
+  },
+  {
+    "image": "maps/medium/maps_11.png",
+    "answer": "كازاخستان",
+    "category": "maps",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-030"
+  },
+  {
+    "image": "maps/medium/maps_12.png",
+    "answer": "مدغشقر",
+    "category": "maps",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-031"
+  },
+  {
+    "image": "maps/hard/maps_13.png",
+    "answer": "قيرغيزستان",
+    "category": "maps",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-032"
+  },
+  {
+    "image": "maps/hard/maps_14.png",
+    "answer": "طاجيكستان",
+    "category": "maps",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-033"
+  },
+  {
+    "image": "maps/hard/maps_15.png",
+    "answer": "سورينام",
+    "category": "maps",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-034"
+  },
+  {
+    "image": "maps/hard/maps_16.png",
+    "answer": "بنين",
+    "category": "maps",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-035"
+  },
+  {
+    "image": "maps/hard/maps_17.png",
+    "answer": "مولدوفا",
+    "category": "maps",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-036"
+  },
+  {
+    "image": "maps/hard/maps_18.png",
+    "answer": "إريتريا",
+    "category": "maps",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Natural Earth low resolution",
+    "id": "R02-037"
+  },
+  {
+    "image": "Examples/maps_example.png",
+    "answer": "إسبانيا",
+    "category": "maps",
+    "difficulty": "example",
+    "example": true,
+    "source": "Natural Earth low resolution",
+    "id": "R02-038"
+  },
+  {
+    "image": "seas/mixed/seas_01.png",
+    "answer": "البحر الأحمر",
+    "category": "seas",
+    "difficulty": "mixed",
+    "example": false,
+    "source": "Natural Earth; approximate highlighted area",
+    "id": "R02-039"
+  },
+  {
+    "image": "seas/mixed/seas_02.png",
+    "answer": "البحر الأسود",
+    "category": "seas",
+    "difficulty": "mixed",
+    "example": false,
+    "source": "Natural Earth; approximate highlighted area",
+    "id": "R02-040"
+  },
+  {
+    "image": "seas/mixed/seas_03.png",
+    "answer": "بحر العرب",
+    "category": "seas",
+    "difficulty": "mixed",
+    "example": false,
+    "source": "Natural Earth; approximate highlighted area",
+    "id": "R02-041"
+  },
+  {
+    "image": "seas/mixed/seas_04.png",
+    "answer": "بحر البلطيق",
+    "category": "seas",
+    "difficulty": "mixed",
+    "example": false,
+    "source": "Natural Earth; approximate highlighted area",
+    "id": "R02-042"
+  },
+  {
+    "image": "seas/mixed/seas_05.png",
+    "answer": "بحر تسمان",
+    "category": "seas",
+    "difficulty": "mixed",
+    "example": false,
+    "source": "Natural Earth; approximate highlighted area",
+    "id": "R02-043"
+  },
+  {
+    "image": "Examples/seas_example.png",
+    "answer": "خليج المكسيك",
+    "category": "seas",
+    "difficulty": "example",
+    "example": true,
+    "source": "Natural Earth; approximate sea boundary",
+    "id": "R02-044"
+  },
+  {
+    "image": "players/players_01.jpg",
+    "answer": "أندريا بيرلو",
+    "answer_en": "Andrea Pirlo",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Andrea Pirlo.jpg",
+    "id": "R02-045"
+  },
+  {
+    "image": "players/players_02.jpg",
+    "answer": "أندريس داليساندرو",
+    "answer_en": "Andres D’Alessandro",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Andres D’Alessandro.jpg",
+    "id": "R02-046"
+  },
+  {
+    "image": "players/players_03.jpg",
+    "answer": "أندريس إنييستا",
+    "answer_en": "Andres Iniesta",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Andres Iniesta.jpg",
+    "id": "R02-047"
+  },
+  {
+    "image": "players/players_04.jpg",
+    "answer": "أنطوان غريزمان",
+    "answer_en": "Antoine Griezmann",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Antoine Griezmann.jpg",
+    "id": "R02-048"
+  },
+  {
+    "image": "players/players_05.jpg",
+    "answer": "كريستيانو رونالدو",
+    "answer_en": "Cristiano Ronaldo",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Cristiano Ronaldo.jpg",
+    "id": "R02-049"
+  },
+  {
+    "image": "players/players_06.jpg",
+    "answer": "دافيد فيا",
+    "answer_en": "David Villa",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/David Villa.jpg",
+    "id": "R02-050"
+  },
+  {
+    "image": "players/players_07.jpg",
+    "answer": "دييغو فورلان",
+    "answer_en": "Diego Forlan",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Diego Forlan.jpg",
+    "id": "R02-051"
+  },
+  {
+    "image": "players/players_08.jpg",
+    "answer": "دييغو ميليتو",
+    "answer_en": "Diego Milito",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Diego Milito.jpg",
+    "id": "R02-052"
+  },
+  {
+    "image": "players/players_09.jpg",
+    "answer": "دييغو تريستان",
+    "answer_en": "Diego Tristan",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Diego Tristan.jpg",
+    "id": "R02-053"
+  },
+  {
+    "image": "players/players_10.jpg",
+    "answer": "يان كولر",
+    "answer_en": "Jan Koller",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Jan Koller.jpg",
+    "id": "R02-054"
+  },
+  {
+    "image": "players/players_11.jpg",
+    "answer": "خافيير سافيولا",
+    "answer_en": "Javier Saviola",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Javier Saviola.jpg",
+    "id": "R02-055"
+  },
+  {
+    "image": "players/players_12.jpg",
+    "answer": "خوان رومان ريكيلمي",
+    "answer_en": "Juan Roman Riquelme",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Juan Roman Riquelme.jpg",
+    "id": "R02-056"
+  },
+  {
+    "image": "players/players_13.jpg",
+    "answer": "خوليو بابتيستا",
+    "answer_en": "Julio Baptista",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Julio Baptista.jpg",
+    "id": "R02-057"
+  },
+  {
+    "image": "players/players_14.jpg",
+    "answer": "ليونيل ميسي",
+    "answer_en": "Lionel Messi",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Lionel Messi.jpg",
+    "id": "R02-058"
+  },
+  {
+    "image": "players/players_15.jpg",
+    "answer": "لوكا مودريتش",
+    "answer_en": "Luka Modric",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Luka Modric.jpg",
+    "id": "R02-059"
+  },
+  {
+    "image": "players/players_16.jpg",
+    "answer": "محمد صلاح",
+    "answer_en": "Mohamed Salah",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Mohamed Salah.jpg",
+    "id": "R02-060"
+  },
+  {
+    "image": "players/players_17.jpg",
+    "answer": "نيمار",
+    "answer_en": "Neymar Jr",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Neymar Jr.jpg",
+    "id": "R02-061"
+  },
+  {
+    "image": "players/players_18.jpg",
+    "answer": "بابلو أيمار",
+    "answer_en": "Pablo Aimar",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Pablo Aimar.jpg",
+    "id": "R02-062"
+  },
+  {
+    "image": "players/players_19.jpg",
+    "answer": "ريكاردو كواريزما",
+    "answer_en": "Ricardo Quaresma",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Ricardo Quaresma.jpg",
+    "id": "R02-063"
+  },
+  {
+    "image": "players/players_20.jpg",
+    "answer": "روي ماكاي",
+    "answer_en": "Roy Makaay",
+    "category": "players",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Football/Roy Makaay.jpg",
+    "id": "R02-064"
+  },
+  {
+    "image": "characters/characters_01.jpg",
+    "answer": "هيول بابينو",
+    "answer_en": "Huell Babineaux — Breaking Bad",
+    "category": "characters",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Huell Babineaux — Breaking Bad.jpg",
+    "id": "R02-065"
+  },
+  {
+    "image": "characters/characters_02.jpg",
+    "answer": "جاك سبارو",
+    "answer_en": "Jack Sparrow",
+    "category": "characters",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Jack Sparrow.jpg",
+    "id": "R02-066"
+  },
+  {
+    "image": "characters/characters_03.jpg",
+    "answer": "مستر بين",
+    "answer_en": "Mr. Bean",
+    "category": "characters",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Mr. Bean.jpg",
+    "id": "R02-067"
+  },
+  {
+    "image": "characters/characters_04.jpg",
+    "answer": "سول غودمان",
+    "answer_en": "Saul Goodman — Better Call Saul",
+    "category": "characters",
+    "difficulty": "unspecified",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Saul Goodman — Better Call Saul.jpg",
+    "id": "R02-068"
+  },
+  {
+    "image": "characters/characters_05.png",
+    "answer": "المتشرد (تشارلي تشابلن)",
+    "answer_en": "The Tramp — Charlie Chaplin",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/The Tramp — Charlie Chaplin.png",
+    "id": "R02-069"
+  },
+  {
+    "image": "characters/characters_06.jpg",
+    "answer": "شيرلوك هولمز",
+    "answer_en": "Sherlock Holmes",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Sherlock Holmes.jpg",
+    "id": "R02-070"
+  },
+  {
+    "image": "characters/characters_07.jpg",
+    "answer": "دراكولا",
+    "answer_en": "Dracula — Bela Lugosi",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Dracula — Bela Lugosi.jpg",
+    "id": "R02-071"
+  },
+  {
+    "image": "characters/characters_08.jpg",
+    "answer": "وحش فرانكنشتاين",
+    "answer_en": "Frankenstein’s Monster",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Frankenstein’s Monster.jpg",
+    "id": "R02-072"
+  },
+  {
+    "image": "characters/characters_09.jpg",
+    "answer": "جيمس بوند",
+    "answer_en": "James Bond",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/James Bond.jpg",
+    "id": "R02-073"
+  },
+  {
+    "image": "characters/characters_10.jpg",
+    "answer": "إنديانا جونز",
+    "answer_en": "Indiana Jones",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Indiana Jones.jpg",
+    "id": "R02-074"
+  },
+  {
+    "image": "characters/characters_11.jpg",
+    "answer": "روكي بالبوا",
+    "answer_en": "Rocky Balboa",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Rocky Balboa.jpg",
+    "id": "R02-075"
+  },
+  {
+    "image": "characters/characters_12.jpg",
+    "answer": "فورست غامب",
+    "answer_en": "Forrest Gump",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Forrest Gump.jpg",
+    "id": "R02-076"
+  },
+  {
+    "image": "characters/characters_13.jpg",
+    "answer": "الجوكر",
+    "answer_en": "The Joker",
+    "category": "characters",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/The Joker.jpg",
+    "id": "R02-077"
+  },
+  {
+    "image": "characters/characters_14.jpg",
+    "answer": "باتمان",
+    "answer_en": "Batman",
+    "category": "characters",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Batman.jpg",
+    "id": "R02-078"
+  },
+  {
+    "image": "characters/characters_15.jpg",
+    "answer": "وندر وومان",
+    "answer_en": "Wonder Woman",
+    "category": "characters",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Wonder Woman.jpg",
+    "id": "R02-079"
+  },
+  {
+    "image": "characters/characters_16.jpg",
+    "answer": "وينزداي آدامز",
+    "answer_en": "Wednesday Addams",
+    "category": "characters",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Wednesday Addams.jpg",
+    "id": "R02-080"
+  },
+  {
+    "image": "characters/characters_17.jpg",
+    "answer": "الدكتور",
+    "answer_en": "The Doctor",
+    "category": "characters",
+    "difficulty": "medium",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/The Doctor.jpg",
+    "id": "R02-081"
+  },
+  {
+    "image": "characters/characters_18.png",
+    "answer": "دون فيتو كورليوني",
+    "answer_en": "Don Vito Corleone — The Godfather",
+    "category": "characters",
+    "difficulty": "hard",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Don Vito Corleone — The Godfather.png",
+    "id": "R02-082"
+  },
+  {
+    "image": "characters/characters_19.jpg",
+    "answer": "بوباي",
+    "answer_en": "Popeye",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Popeye.jpg",
+    "id": "R02-083"
+  },
+  {
+    "image": "characters/characters_20.png",
+    "answer": "بيتي بوب",
+    "answer_en": "Betty Boop",
+    "category": "characters",
+    "difficulty": "easy",
+    "example": false,
+    "source": "Original_Photos_Replaced.zip",
+    "original_file": "Characters/Betty Boop.png",
+    "id": "R02-084"
+  }
+]
