@@ -229,7 +229,7 @@
   A.setAuto = function (S, clk, on) { if ((S.auto !== false) === !!on) return null; S = clone(S); S.auto = !!on; return bump(S, clk, null); };
   // ---- top-level mode: menu | quiz | moves ----
   A.setMode = function (S, clk, mode) {
-    if (['menu', 'quiz', 'moves'].indexOf(mode) < 0 || (S.mode || 'menu') === mode) return null;
+    if (['menu', 'quiz', 'moves'].indexOf(mode) < 0 || (S.mode || 'quiz') === mode) return null;
     S = clone(S);
     if (S.phase === 'live' && mode !== 'quiz') { settle(S); S.phase = 'paused'; }
     S.mode = mode;

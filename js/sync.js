@@ -121,12 +121,21 @@
     function onMsg(sub, obj) {
       if (sub === 'state') receive(obj, 'mqtt');
       else if (sub === 'bank2' && cfg.onBank && obj && Array.isArray(obj.list)) cfg.onBank(obj.list);
-      else if (sub === 'hello' && cfg.role === 'control') heartbeat();
+      else if (sub === 'hello' && cfg.role === 'control') {
+        if (obj && obj.id) { seen[obj.id] = Date.now(); countScreens(); }
+        if (!obj || obj.first) heartbeat();
+      }
     }
     mq = urls.map(function (u) { return new Mqtt(u, base, onMsg, onConn); });
     setStatus({ mode: 'mqtt' });
-    if (cfg.role === 'screen') setTimeout(function () { mq.forEach(function (m) { m.pub('hello', { t: Date.now() }, false); }); }, 2500);
+    if (cfg.role === 'screen') {
+      setTimeout(function () { mq.forEach(function (m) { m.pub('hello', { t: Date.now(), id: me, first: 1 }, false); }); }, 2500);
+      setInterval(function () { mq.forEach(function (m) { m.pub('hello', { t: Date.now(), id: me }, false); }); }, 5000);
+    }
+    if (cfg.role === 'control') setInterval(countScreens, 3000);
   }
+  var seen = {};
+  function countScreens() { var n = 0, t = Date.now(); for (var k in seen) { if (t - seen[k] < 13000) n++; else delete seen[k]; } if (n !== status.screens) setStatus({ screens: n }); }
   function pubBank(list) { mq.forEach(function (m) { m.pub('bank2', { list: list }, true); }); }
 
   /* ---------- claude.ai artifact: room + db ---------- */

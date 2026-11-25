@@ -425,3 +425,9 @@ textarea{width:100%;font:inherit;font-size:14px;line-height:1.6;background:#050b
 .cpm-list button.on{border-color:var(--yel);background:#3a2e08}
 
 .cp-top{flex-wrap:wrap}.cp-switch{font-size:13px;padding:8px 12px;border-radius:20px;border:1px solid #8fb0ff;background:#13224a;color:#fff}
+
+.cp-scrlink{display:grid;gap:4px;padding:10px 12px;border-radius:12px;border:2px dashed #ffb02b;background:#2a1d02}
+.cp-scrlink.ok{border-style:solid;border-color:#2bd96b;background:#0f3a24}
+.cp-scrlink small{font-size:13px;color:#ffe2a8}.cp-scrlink.ok small{color:#bdf5d3}
+.cp-scrlink b{direction:ltr;text-align:left;font-family:var(--f-num);font-size:15px;word-break:break-all;color:#fff}
+.cp-scrlink button{justify-self:start;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid #fff6;background:#0006}

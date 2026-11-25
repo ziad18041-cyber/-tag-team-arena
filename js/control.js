@@ -120,10 +120,12 @@
       cls = st.connected ? 'ok' : (st.dbOk ? 'warn' : 'bad');
       t = (st.connected ? 'متصل' : (st.dbOk ? 'متصل (بطيء)' : 'غير متصل')) + ' • شاشات: ' + (st.screens || 0);
     } else if (st.mode === 'mqtt') {
-      cls = st.connected ? 'ok' : 'bad'; t = (st.connected ? 'متصل' : 'جارٍ الاتصال…') + ' • غرفة ' + (st.room || '-');
+      cls = st.connected ? 'ok' : 'bad'; t = (st.connected ? 'متصل' : 'جارٍ الاتصال…') + ' • شاشات: ' + (st.screens || 0);
       $('roomRow').hidden = false; $('roomCode').textContent = st.room || '';
-      var base = location.href.split('#')[0].split('?')[0];
-      $('roomLinks').textContent = 'الجمهور: ' + base + '?room=' + st.room + '#screen';
+      var base = location.href.split('#')[0].split('?')[0], link = base + '?room=' + st.room + '#screen';
+      $('roomLinks').textContent = link;
+      $('scrLink').hidden = false; $('scrLinkUrl').textContent = link; $('scrLink').classList.toggle('ok', (st.screens || 0) > 0);
+      $('scrLinkState').textContent = (st.screens || 0) > 0 ? '✓ شاشة الجمهور متصلة' : 'افتح هذا الرابط على اللابتوب (شاشة الجمهور):';
     } else { cls = 'warn'; t = 'محلي فقط'; }
     if (st.note) t += ' • ' + st.note;
     c.className = 'cp-conn ' + cls; c.querySelector('span').textContent = t;
@@ -210,6 +212,10 @@
     $('bankShuffle').addEventListener('click', function () { if (act('clearUsed', bank)) toast('رجعت كل الأسئلة متاحة من جديد'); });
     $('bankDefault').addEventListener('click', function () { setBank(window.TT_DEFAULT_QUESTIONS.slice(), true); act('bank', bank); toast('أعيدت الأسئلة الافتراضية'); });
     
+    $('scrLinkCopy').addEventListener('click', function () {
+      var u = $('scrLinkUrl').textContent;
+      try { navigator.clipboard.writeText(u).then(function () { toast('نُسخ الرابط'); }, function () { toast('انسخه يدويًا'); }); } catch (e) { toast('انسخه يدويًا'); }
+    });
     $('wakeBtn').addEventListener('click', function () { wakeLock(); toast(navigator.wakeLock ? 'الشاشة ستبقى مضاءة' : 'المتصفح لا يدعم إبقاء الشاشة — عطّل القفل التلقائي'); });
     document.addEventListener('visibilitychange', function () { if (!document.hidden) { wakeLock(); TTSync.heartbeat(); } });
 
