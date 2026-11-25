@@ -37,6 +37,7 @@
       qn: Math.max(1, bank.length),
       q: bank[0] || '',
       mute: !!opts.mute,
+      round: opts.round || 1,
       ev: { n: (opts.evn || 0) + 1, t: 'reset', s: null, a: null, b: null }
     };
   }
@@ -130,7 +131,8 @@
     return bump(S, clk, { t: 'tag', s: side, a: id, b: out });
   };
   A.reset = function (S, clk, bank) {
-    var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: bank, v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute });
+    var N = fresh({ teams: S.teams, dur: S.dur, starter: S.starter, bank: bank, v: S.v, evn: S.ev ? S.ev.n : 0, clk: clk, mute: S.mute, round: S.round });
+    N.active = S.active.slice();
     // keep the current question position so the host doesn't lose place
     if (bank && bank.length) { N.qi = S.qi % bank.length; N.q = bank[N.qi]; N.qn = bank.length; }
     return N;
@@ -155,6 +157,8 @@
   };
   A.setDur = function (S, clk, ms) {
     if (S.phase !== 'ready') return null;
+    ms = Math.max(30000, Math.min(600000, Math.round(ms / 1000) * 1000));
+    if (ms === S.dur) return null;
     S = clone(S); S.dur = ms; S.times = [ms, ms];
     return bump(S, clk, null);
   };
@@ -162,8 +166,18 @@
     if (S.phase === 'over') return null;
     S = clone(S);
     if (settle(S) === 'timeout') return bump(S, clk, timeoutEvent(S));
-    S.times[side] = Math.max(1000, Math.min(S.dur * 3, S.times[side] + delta));
+    S.times[side] = Math.max(1000, Math.min(600000, S.times[side] + delta));
     return bump(S, clk, null);
+  };
+  A.setActive = function (S, clk, side, id) {
+    if (S.phase !== 'ready' || S.teams[side].indexOf(id) < 0 || S.active[side] === id) return null;
+    S = clone(S); S.active[side] = id;
+    return bump(S, clk, { t: 'roster', s: side, a: id, b: null });
+  };
+  A.setRound = function (S, clk, n) {
+    if (S.phase !== 'ready' || n < 1 || n > 9 || n === S.round) return null;
+    S = clone(S); S.round = n;
+    return bump(S, clk, { t: 'roster', s: null, a: null, b: null });
   };
   A.mute = function (S, clk, m) { S = clone(S); S.mute = !!m; return bump(S, clk, null); };
   A.bank = function (S, clk, bank) {

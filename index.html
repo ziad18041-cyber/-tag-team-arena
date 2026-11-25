@@ -61,7 +61,7 @@
         <div class="title">
           <div class="tt">TAG TEAM</div>
           <div class="ar">الاستنزاف</div>
-          <div class="rd">ROUND 01</div>
+          <div class="rd" id="roundTag">ROUND 01</div>
         </div>
         <div class="press p1" id="press1">
           <svg viewBox="0 0 60 130" aria-hidden="true"><defs>
@@ -120,6 +120,16 @@
     <div class="cp-clock y" id="cc1"><small>الأصفر</small><b id="ct1">02:00</b><em id="cn1"></em></div>
   </div>
 
+  <section class="cp-setup" id="setup">
+    <div class="cp-sh">تجهيز الراوند <small>(قبل البدء)</small></div>
+    <div class="cp-row"><span>الراوند</span><div class="seg" id="roundSeg"><button data-r="1">1</button><button data-r="2">2</button><button data-r="3">3</button><button data-r="4">4</button></div></div>
+    <div class="cp-row"><span>الفريق الذي يبدأ</span><div class="seg"><button id="st0">الأزرق</button><button id="st1">الأصفر</button></div></div>
+    <div class="cp-row col"><span>الوقت لكل فريق</span>
+      <div class="dur"><button id="durMinus">− 30ث</button><b id="durVal">02:00</b><button id="durPlus">+ 30ث</button></div>
+      <div class="seg" id="durSeg"><button data-d="60000">1:00</button><button data-d="120000">2:00</button><button data-d="180000">3:00</button><button data-d="300000">5:00</button><button data-d="600000">10:00</button></div></div>
+    <div class="cp-row col"><span>توزيع الفرق ومن يبدأ من كل فريق <small id="teamCount"></small></span><div class="cp-roster" id="teamset"></div></div>
+  </section>
+
   <div class="cp-answers">
     <button class="cp-ans b" id="ans0">✓ جاوب الأزرق</button>
     <button class="cp-ans y" id="ans1">✓ جاوب الأصفر</button>
@@ -146,9 +156,6 @@
 
   <details class="cp-set" id="settings">
     <summary>⚙️ الإعدادات</summary>
-    <div class="cp-row"><span>الفريق الذي يبدأ</span><div class="seg"><button id="st0">الأزرق</button><button id="st1">الأصفر</button></div></div>
-    <div class="cp-row col"><span>توزيع الفرق (قبل البدء)</span><div class="cp-teamset" id="teamset"></div></div>
-    <div class="cp-row"><span>وقت كل فريق</span><div class="seg" id="durSeg"><button data-d="60000">1:00</button><button data-d="90000">1:30</button><button data-d="120000">2:00</button><button data-d="180000">3:00</button></div></div>
     <div class="cp-row"><span>تصحيح الوقت</span><div class="adj"><button data-a="0,-5000">أزرق −5</button><button data-a="0,5000">أزرق +5</button><button data-a="1,-5000">أصفر −5</button><button data-a="1,5000">أصفر +5</button></div></div>
     <div class="cp-row"><span>صوت شاشة الجمهور</span><div class="seg"><button id="snd1">تشغيل</button><button id="snd0">كتم</button></div></div>
     <div class="cp-row col"><span>بنك الأسئلة (سؤال في كل سطر)</span><textarea id="bankText" rows="8"></textarea>

@@ -43,11 +43,18 @@
         box.appendChild(b);
       });
     });
-    var ts = $('teamset'); ts.innerHTML = '';
-    P.forEach(function (p, i) {
-      var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.textContent = p.name;
-      b.addEventListener('click', function () { var side = S.teams[0].indexOf(i) >= 0 ? 1 : 0; if (!act('setTeam', i, side)) toast('لا يمكن ترك فريق بلا لاعبين، أو الراوند بدأ'); });
-      ts.appendChild(b);
+    var ts = $('teamset');
+    if (!ts.children.length) P.forEach(function (p, i) {
+      var row = document.createElement('div'); row.className = 'pr'; row.dataset.i = i;
+      var im = document.createElement('img'); im.src = p.face; im.alt = '';
+      var nm = document.createElement('b'); nm.textContent = p.name;
+      var bb = document.createElement('button'); bb.type = 'button'; bb.className = 'tb'; bb.textContent = 'أزرق';
+      var by = document.createElement('button'); by.type = 'button'; by.className = 'ty'; by.textContent = 'أصفر';
+      var st = document.createElement('button'); st.type = 'button'; st.className = 'st'; st.textContent = '⭐ يبدأ';
+      bb.addEventListener('click', function () { if (S.teams[0].indexOf(i) < 0 && !act('setTeam', i, 0)) toast('لا يمكن ترك فريق بلا لاعبين'); });
+      by.addEventListener('click', function () { if (S.teams[1].indexOf(i) < 0 && !act('setTeam', i, 1)) toast('لا يمكن ترك فريق بلا لاعبين'); });
+      st.addEventListener('click', function () { var k = S.teams[0].indexOf(i) >= 0 ? 0 : 1; if (S.active[k] !== i && act('setActive', k, i)) toast(p.name + ' يبدأ للفريق ' + TEAM[k]); });
+      row.appendChild(im); row.appendChild(nm); row.appendChild(bb); row.appendChild(by); row.appendChild(st); ts.appendChild(row);
     });
   }
   var teamsKey = '';
@@ -86,8 +93,17 @@
     var ready = S.phase === 'ready';
     $('st0').classList.toggle('on', S.starter === 0); $('st1').classList.toggle('on', S.starter === 1);
     $('st0').disabled = $('st1').disabled = !ready;
-    $('teamset').querySelectorAll('button').forEach(function (bt) { var i = +bt.dataset.i, t = S.teams[0].indexOf(i) >= 0 ? 0 : 1; bt.className = 't' + t; bt.disabled = !ready; bt.title = TEAM[t]; });
-    $('durSeg').querySelectorAll('button').forEach(function (bt) { bt.classList.toggle('on', +bt.dataset.d === S.dur); bt.disabled = !ready; });
+    $('setup').hidden = !ready;
+    $('teamset').querySelectorAll('.pr').forEach(function (row) {
+      var i = +row.dataset.i, t = S.teams[0].indexOf(i) >= 0 ? 0 : 1;
+      row.className = 'pr s' + t;
+      row.querySelector('.tb').classList.toggle('on', t === 0); row.querySelector('.ty').classList.toggle('on', t === 1);
+      row.querySelector('.st').classList.toggle('on', S.active[t] === i);
+    });
+    $('teamCount').textContent = '— الأزرق ' + S.teams[0].length + ' • الأصفر ' + S.teams[1].length;
+    $('durVal').textContent = TT.fmt(S.dur);
+    $('durSeg').querySelectorAll('button').forEach(function (bt) { bt.classList.toggle('on', +bt.dataset.d === S.dur); });
+    $('roundSeg').querySelectorAll('button').forEach(function (bt) { bt.classList.toggle('on', +bt.dataset.r === (S.round || 1)); });
     $('snd1').classList.toggle('on', !S.mute); $('snd0').classList.toggle('on', !!S.mute);
   }
 
@@ -158,6 +174,9 @@
     $('st0').addEventListener('click', function () { act('setStarter', 0); });
     $('st1').addEventListener('click', function () { act('setStarter', 1); });
     $('durSeg').querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { act('setDur', +b.dataset.d); }); });
+    $('durMinus').addEventListener('click', function () { act('setDur', S.dur - 30000); });
+    $('durPlus').addEventListener('click', function () { act('setDur', S.dur + 30000); });
+    $('roundSeg').querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { act('setRound', +b.dataset.r); }); });
     document.querySelectorAll('[data-a]').forEach(function (b) { b.addEventListener('click', function () { var a = b.dataset.a.split(','); if (act('adjust', +a[0], +a[1])) toast('تم تعديل الوقت'); }); });
     $('snd1').addEventListener('click', function () { act('mute', false); });
     $('snd0').addEventListener('click', function () { act('mute', true); });

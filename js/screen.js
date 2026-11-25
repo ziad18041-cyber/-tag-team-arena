@@ -38,6 +38,7 @@
   }
 
   function off() { return S ? TTSync.offset(S.clk) : 0; }
+  function rnd() { return String((S && S.round) || 1).padStart(2, '0'); }
   function rem(k) { return S ? TT.remaining(S, k, Date.now(), off()) : TT.DUR; }
   function isOver() { return S && (S.phase === 'over' || (S.phase === 'live' && rem(S.turn) <= 0)); }
   function winner() { if (!S) return null; if (S.phase === 'over') return S.winner; if (S.phase === 'live' && rem(S.turn) <= 0) return 1 - S.turn; return null; }
@@ -47,7 +48,7 @@
     var w = winner(), live = S.phase === 'live' || S.phase === 'paused';
     [0, 1].forEach(function (k) {
       var team = S.teams[k], act = S.active[k], bench = team.filter(function (i) { return i !== act; });
-      var dom = live && S.started !== false && S.turn !== k, under = live && S.turn === k;
+      var dom = live && S.turn !== k, under = live && S.turn === k;
       var place = function (i, x, size, z, isAct) {
         var f = figs[i];
         f.classList.toggle('side0', k === 0); f.classList.toggle('side1', k === 1);
@@ -90,6 +91,7 @@
     st.classList.add('phase-' + (isOver() ? 'over' : S.phase));
     var q = S.q || '';
     $('qtext').textContent = q; $('qtext').classList.toggle('long', q.length > 42);
+    $('roundTag').textContent = 'ROUND ' + rnd();
     $('qnum').textContent = 'السؤال ' + String(S.qi + 1).padStart(2, '0') + ' من ' + S.qn;
     [0, 1].forEach(function (k) {
       var faces = $('roster' + k).querySelectorAll('.r-face');
@@ -136,14 +138,19 @@
   function shot(name) {
     lastShot = name;
     var a0 = S ? S.active[0] : 0, a1 = S ? S.active[1] : 3, dom = S ? 1 - S.turn : 0, und = S ? S.turn : 1;
+    var tk = S ? S.turn : 0, tAct = S ? S.active[tk] : 0;
+    var tBench = S ? S.teams[tk].filter(function (i) { return i !== tAct; }) : [];
+    var half = tk === 0 ? 480 : 1440;
     switch (name) {
       case 'wide': camTo(960, 470, 1); break;
       case 'two': camTo(960, 300, 1.12); break;
       case 'push': camTo(960, 470, 1.06); break;
-      case 'domClose': camTo(figX(S.active[dom]), 150, 1.3); break;
-      case 'underClose': camTo(figX(S.active[und]), 150, 1.28, und === 0 ? 1.2 : -1.2); break;
-      case 'dutch': camTo(figX(S.active[dom]) * .6 + 960 * .4, 150, 1.2, dom === 0 ? -2.5 : 2.5); break;
-      case 'benchDom': var b = S.teams[dom].filter(function (i) { return i !== S.active[dom]; }); camTo(b.length ? figX(b[0]) * .5 + figX(S.active[dom]) * .5 : 960, 150, 1.22); break;
+      case 'turnClose': camTo(figX(tAct), 150, 1.32); break;
+      case 'turnTight': camTo(figX(tAct), 150, 1.45, tk === 0 ? 1.2 : -1.2); break;
+      case 'turnHalf': camTo(half, 150, 1.14); break;
+      case 'turnDutch': camTo(figX(tAct) * .7 + half * .3, 150, 1.22, tk === 0 ? -2.5 : 2.5); break;
+      case 'turnBench': camTo(tBench.length ? (figX(tBench[0]) + figX(tAct)) / 2 : figX(tAct), 150, 1.24); break;
+      case 'turnPush': camTo(half * .6 + 960 * .4, 300, 1.08); break;
       case 'blueClose': camTo(figX(a0), 150, 1.3); break;
       case 'yellowClose': camTo(figX(a1), 150, 1.3); break;
       case 'win': camTo(960, 150, 1.06); break;
@@ -155,8 +162,8 @@
     if (winner() != null) list = ['win', 'two', 'push'];
     else if (S.phase === 'ready') list = ['wide', 'two', 'blueClose', 'yellowClose', 'wide'];
     else if (S.phase === 'paused') return;
-    else if (rem(S.turn) <= 10000) list = ['underClose', 'two', 'underClose', 'domClose', 'push'];
-    else list = ['wide', 'domClose', 'underClose', 'push', 'dutch', 'benchDom', 'two', 'domClose'];
+    else if (rem(S.turn) <= 10000) list = ['turnTight', 'turnClose', 'turnDutch', 'turnTight'];
+    else list = ['turnClose', 'turnHalf', 'turnBench', 'turnDutch', 'turnPush', 'turnTight', 'turnClose'];
     var n = pick(list), guard = 0; while (n === lastShot && guard++ < 5) n = pick(list);
     shot(n);
   }
@@ -276,13 +283,13 @@
     shot('wide');
     later(100, function () { big('TAG TEAM', '', '#7cc4ff', true); sfx('impact'); });
     later(900, function () { big('الاستنزاف', '', '#ffc928'); sfx('impact'); });
-    later(1700, function () { big('ROUND 01', 'يبدأ الفريق ' + TEAM[S.turn], COLORS[S.turn], true); sfx('impact'); sfx('bell'); });
+    later(1700, function () { big('ROUND ' + rnd(), 'يبدأ الفريق ' + TEAM[S.turn], COLORS[S.turn], true); sfx('impact'); sfx('bell'); });
     later(2600, function () {
       flash('#fff'); dim(0); cls('dark', false); bigHide(); setCheer(1, 2500); sfx('cheer', 2.5);
       sparks(200, 760, 60, ['#5aa6ff', '#fff'], 1); sparks(1720, 760, 60, ['#ffc928', '#fff'], 1);
       [0, 1].forEach(function (k) { S.teams[k].forEach(function (i, j) { later(j * 140, function () { pose(i, 'p-enter'); }); }); });
     });
-    later(3500, function () { cls('letterbox', false); cyclePoses(); shot('domClose'); });
+    later(3500, function () { cls('letterbox', false); cyclePoses(); shot('turnClose'); });
     return 3600;
   };
   SC.tag = function (ev) {
@@ -347,7 +354,7 @@
       bigHide(); var w = $('stripes'); w.className = 'stripes'; w.style.setProperty('--wc', col); void w.offsetWidth; w.classList.add('wipe'); if (k === 1) w.classList.add('rtl');
       sfx('whoosh');
     });
-    later(1350, function () { big('الدور على ' + TEAM[nk], 'السيطرة الآن للفريق ' + TEAM[k], COLORS[nk]); shot('underClose'); });
+    later(1350, function () { big('الدور على ' + TEAM[nk], '', COLORS[nk]); shot('turnClose'); });
     later(2300, function () { bigHide(); cyclePoses(); });
     return 2400;
   };
