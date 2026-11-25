@@ -129,6 +129,7 @@
       $('scrLinkState').textContent = (st.screens || 0) > 0 ? '✓ شاشة الجمهور متصلة' : 'افتح هذا الرابط على اللابتوب (شاشة الجمهور):';
     } else { cls = 'warn'; t = 'محلي فقط'; }
     if (st.note) t += ' • ' + st.note;
+    t += ' • نسخة ' + (window.TT_BUILD || '?');
     c.className = 'cp-conn ' + cls; c.querySelector('span').textContent = t;
   }
 

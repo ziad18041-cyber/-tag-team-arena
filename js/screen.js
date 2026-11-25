@@ -498,6 +498,7 @@
   function status(st) {
     var t = st.mode === 'claude' ? (st.connected ? 'متصل' : 'بانتظار الاتصال') : st.mode === 'mqtt' ? ((st.connected ? 'متصل' : 'جارٍ الاتصال') + ' • خوادم ' + (st.links || 0) + '/' + (st.linksTotal || 0) + (st.room ? ' • الغرفة ' + st.room : '')) : 'محلي';
     if (st.note) t += ' • ' + st.note;
+    t += ' • نسخة ' + (window.TT_BUILD || '?');
     $('scrStatus').textContent = t; $('soStatus').textContent = t;
   }
 
