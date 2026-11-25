@@ -15,6 +15,8 @@
     if (location.hash.replace('#', '').split(/[?&]/)[0] !== r) { try { history.replaceState(null, '', location.pathname + location.search + '#' + r); } catch (e) {} }
     if (r === 'screen') window.TTScreenStart(); else window.TTControlStart();
   }
+  function reset() { try { localStorage.removeItem('tt_role'); } catch (e) {} try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} location.reload(); }
+  document.querySelectorAll('[data-switch]').forEach(function (b) { b.addEventListener('click', reset); });
   var r = role();
   if (r) go(r);
   else {

@@ -168,7 +168,7 @@
       setBank(b, true); S = TT.clone(S); S.qi = 0; act('bank', bank); toast('تم خلط الترتيب — السؤال الحالي أولًا');
     });
     $('bankDefault').addEventListener('click', function () { setBank(window.TT_DEFAULT_QUESTIONS.slice(), true); act('bank', bank); toast('أعيدت الأسئلة الافتراضية'); });
-    $('switchRole').addEventListener('click', function () { try { localStorage.removeItem('tt_role'); } catch (e) {} location.hash = ''; location.reload(); });
+    $('switchRole').addEventListener('click', function () { try { localStorage.removeItem('tt_role'); } catch (e) {} try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} location.reload(); });
     $('wakeBtn').addEventListener('click', function () { wakeLock(); toast(navigator.wakeLock ? 'الشاشة ستبقى مضاءة' : 'المتصفح لا يدعم إبقاء الشاشة — عطّل القفل التلقائي'); });
     document.addEventListener('visibilitychange', function () { if (!document.hidden) { wakeLock(); TTSync.heartbeat(); } });
 

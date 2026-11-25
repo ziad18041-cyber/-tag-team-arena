@@ -307,3 +307,7 @@ textarea{width:100%;font:inherit;font-size:14px;line-height:1.6;background:#050b
 .cp-toast{visibility:hidden}.cp-toast.on{transform:translateX(-50%) translateY(0);visibility:visible}
 @media (max-width:380px){.cp-ans{font-size:20px;min-height:84px}.cp-btn{font-size:13px}.cp-clock b{font-size:36px}}
 @media (min-width:900px){#control{max-width:880px}.cp-tags{grid-template-columns:1fr 1fr}}
+
+.so-switch{font-size:18px;padding:12px 22px;border-radius:12px;border:1px solid #5b7bb6;background:#0b1630;color:#dfe8ff}
+.scr-switch{position:fixed;top:calc(8px + env(safe-area-inset-top));right:8px;z-index:110;font-size:14px;padding:8px 12px;border-radius:10px;border:1px solid #5b7bb6;background:#0b1630cc;color:#dfe8ff;opacity:.35}
+.scr-switch:hover,.scr-switch:focus{opacity:1}
