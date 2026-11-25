@@ -3,6 +3,7 @@
   function role() {
     var h = (location.hash || '').replace('#', '').split(/[?&]/)[0];
     if (h === 'screen' || h === 'control') return h;
+    if (h === 'choose') { try { localStorage.removeItem('tt_role'); } catch (e) {} return null; }
     var q = new URLSearchParams(location.search).get('mode');
     if (q === 'screen' || q === 'control') return q;
     try { var r = localStorage.getItem('tt_role'); if (r === 'screen' || r === 'control') return r; } catch (e) {}

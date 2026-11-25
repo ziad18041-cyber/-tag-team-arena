@@ -159,7 +159,7 @@
   </div>
 
   <div id="startOverlay"><button id="startShow">▶ ابدأ العرض<small>تفعيل الصوت وملء الشاشة</small></button><button class="so-switch" data-switch>⇄ تغيير دور الجهاز (لوحة التحكم)</button><div class="so-status" id="soStatus"></div></div>
-  <button class="scr-switch" data-switch>⇄ تغيير الدور</button>
+  <button class="scr-switch" data-switch type="button">⇄ تغيير الدور</button>
   <div id="scrStatus" class="scr-status"></div>
   <div id="roomAsk" hidden><div class="ra-box"><b>رمز الغرفة</b><p>اكتب الرمز الظاهر في لوحة التحكم</p><input id="roomInput" inputmode="latin" autocomplete="off"><button id="roomGo">اتصال</button></div></div>
 </section>
@@ -169,6 +169,7 @@
   <header class="cp-top">
     <div class="cp-brand">TAG TEAM <span>لوحة التحكم</span></div>
     <div class="cp-conn" id="conn"><i></i><span>…</span></div>
+    <button class="cp-switch" data-switch type="button">⇄ تغيير الدور</button>
   </header>
 
   <div class="seg cp-tabs" id="modeTabs"><button data-mode="menu">القائمة</button><button data-mode="quiz">التحدي الأول</button><button data-mode="moves">تحدي التقليد</button></div>
@@ -251,7 +252,7 @@
     <div class="cp-row col"><span>بنك الأسئلة — كل سطر: السؤال | الجواب | الفئة | الصعوبة</span><textarea id="bankText" rows="8"></textarea>
       <div class="adj"><button id="bankSave">حفظ البنك</button><button id="bankShuffle">تصفير الأسئلة المستخدمة</button><button id="bankDefault">الأسئلة الافتراضية</button></div><small id="bankInfo"></small></div>
     <div class="cp-row col" id="roomRow" hidden><span>رمز الغرفة (للربط بين الأجهزة)</span><b id="roomCode" class="room-code"></b><small id="roomLinks"></small></div>
-    <div class="cp-row"><button class="cp-mini" id="switchRole">تغيير دور الجهاز</button><button class="cp-mini" id="wakeBtn">إبقاء الشاشة مضاءة</button></div>
+    <div class="cp-row"><button class="cp-mini" id="wakeBtn">إبقاء الشاشة مضاءة</button></div>
   </details>
   <div class="cp-toast" id="toast"></div>
 </section>
